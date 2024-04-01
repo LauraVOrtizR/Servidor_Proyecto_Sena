@@ -12,8 +12,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //routes
-app.use(require('./src/routes/rutas'));
-app.use(require('./src/routes/usuarios'));
+app.use(require('./src/routes/usuarioRoutes'));
 
 //Inicializar el servidor
 app.listen(3000, () => {
