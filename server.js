@@ -12,6 +12,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //routes
+app.get('/', (req, res) => {
+    console.log('Welcome to my API');
+    res.json({"message": 'Welcome to my API'});
+});
+
 app.use(require('./src/routes/usuarioRoutes'));
 
 //Inicializar el servidor

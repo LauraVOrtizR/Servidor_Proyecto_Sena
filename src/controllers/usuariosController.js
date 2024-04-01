@@ -12,7 +12,7 @@ module.exports = {
             }
             return res.status(201).json({
                 success: true,
-                message: 'Usuario creado',
+                message: res.message,
                 data: data //Id del usuario creado
             });
         });
