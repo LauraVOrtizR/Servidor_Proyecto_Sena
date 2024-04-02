@@ -1,8 +1,8 @@
-const mysql = require('../config/config');
+const db = require('../config/config');
 const Usuario = {};
+
 Usuario.create = (user, result) => {
-    const sql = `SELECT COUNT(*) AS datos_existentes FROM usuarios 
-                WHERE correo_electronico = ? OR numero_documento = ?;`
+    const sql = 'SELECT COUNT(*) AS datos_existentes FROM usuarios WHERE correo_electronico = ? OR numero_documento = ?'
     ;
     db.query(
         sql,
@@ -13,30 +13,22 @@ Usuario.create = (user, result) => {
                 result(err, null);
             }
             else{
-                console.log('Datos existentes: ', res[0].datos_existentes);
-                if(datos_existentes > 0) {
+                console.log('Datos existentes: ', res[0]);
+                if(res[0].datos_existentes > 0) {
                     result(null, {message: 'El usuario ya existe'});
                 }
                 else {
-                    const sql = `INSERT INTO usuarios(
-                                nombre_completo,
-                                tipo_documento,
-                                numero_documento,
-                                correo_electronico,
-                                contraseña,
-                                rol
-                            )
-                            VALUES (?, ?, ?, ?, ?, ?);`
+                    const sql = 'INSERT INTO usuarios(nombre_usuario, tipo_documento, numero_documento, correo_electronico, contraseña, id_rol)VALUES (?, ?, ?, ?, ?, ?)' 
                     ;
                     db.query(
                         sql,
                         [
-                            user.nombre_completo,
+                            user.nombre_usuario,
                             user.tipo_documento,
                             user.numero_documento,
                             user.correo_electronico,
                             user.contraseña,
-                            user.rol
+                            user.id_rol
                         ],
                         (err, res) => {
                             if(err) {
@@ -50,6 +42,52 @@ Usuario.create = (user, result) => {
                         }
                     )
                 }
+            }
+        }
+    )
+};
+
+Usuario.login = (user, result) => {
+    const sql = 'SELECT correo_electronico, contraseña, id_rol FROM usuarios WHERE correo_electronico = ? AND contraseña = ?'
+    ;
+    db.query(
+        sql,
+        [
+            user.correo_electronico,
+            user.contraseña,
+            user.id_rol
+        ],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Usuario encontrado: ', res);
+                result(null, res, {message: 'Inicio de sesión exitoso'});
+            }
+        }
+    )
+};
+
+Usuario.updatePerfil = (user, result) => {
+    const sql = 'UPDATE usuarios SET nombre_usuario = ? SET id_rol = ? WHERE id_usuario = ?'
+    ;
+    db.query(
+        sql,
+        [
+            user.nombre_usuario,
+            user.id_rol,
+            user.id_usuario
+        ],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Perfil actualizado: ', res);
+                result(null, res, {message: 'Perfil actualizado'});
             }
         }
     )
