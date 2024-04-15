@@ -71,7 +71,7 @@ Usuario.login = (user, result) => {
 };
 
 Usuario.updatePerfil = (user, result) => {
-    const sql = 'UPDATE usuarios SET nombre_usuario = ? SET id_rol = ? WHERE id_usuario = ?'
+    const sql = 'UPDATE usuarios SET nombre_usuario = ?, id_rol = ? WHERE id_usuario = ?'
     ;
     db.query(
         sql,
@@ -92,6 +92,44 @@ Usuario.updatePerfil = (user, result) => {
         }
     )
 };
+
+Usuario.deletePerfil = (user, result) => {
+    const sql = 'DELETE FROM usuarios WHERE id_usuario = ?'
+    ;
+    db.query(
+        sql,
+        [user.id_usuario],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Perfil eliminado: ', res);
+                result(null, res, {message: 'Perfil eliminado'});
+            }
+        }
+    )
+};
+
+Usuario.getPerfil = (user, result) => {
+    const sql = `SELECT nombre_usuario, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios WHERE id_usuario = ?`
+    ;
+    db.query(
+        sql,
+        [user.id_usuario],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Perfil encontrado: ', res);
+                result(null, res, {message: 'Perfil encontrado'});
+            }
+        }
+    )
+}
 
 module.exports = Usuario;
 

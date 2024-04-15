@@ -52,5 +52,57 @@ module.exports = {
                 data: data //Datos del usuario actualizado
             });
         });
+    },
+
+    deletePerfil(req, res) {
+        const user = req.body;
+        console.log('usuario a eliminar', user);
+        Usuario.deletePerfil(user, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al eliminar el perfil',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos del usuario eliminado
+            });
+        });
+    },
+
+    getPerfil (req, res){
+        const id_usuario = req.query.id_usuario || null;
+        if(!id_usuario) {
+            return res.status(400).json({
+                success: false,
+                message: 'El id del usuario es requerido'
+            });
+        }
+        const user = {
+            id_usuario: id_usuario
+        };
+        Usuario.getPerfil(user, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener el perfil',
+                    error: err
+                });
+            }
+            if(data.length ==0){
+                res.status(200).json({
+                    success: false,
+                    message: 'Usuario no encontrado',
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos del usuario
+            });
+        });
     }
 };
