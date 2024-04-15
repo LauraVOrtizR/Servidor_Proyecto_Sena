@@ -112,7 +112,7 @@ Usuario.deletePerfil = (user, result) => {
     )
 };
 
-Usuario.getPerfil = (user, result) => {
+Usuario.getUsusario = (user, result) => {
     const sql = `SELECT nombre_usuario, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios WHERE id_usuario = ?`
     ;
     db.query(
@@ -126,6 +126,32 @@ Usuario.getPerfil = (user, result) => {
             else{
                 console.log('Perfil encontrado: ', res);
                 result(null, res, {message: 'Perfil encontrado'});
+            }
+        }
+    )
+}
+
+Usuario.updateUsuario = (user, result) => {
+    const sql = `UPDATE usuarios SET nombre_usuario = ?, tipo_documento = ?, numero_documento = ?,correo_electronico = ?, contraseña = ? WHERE id_usuario = ?`
+    ;
+    db.query(
+        sql,
+        [
+            user.nombre_usuario,
+            user.tipo_documento,
+            user.numero_documento,
+            user.correo_electronico,
+            user.contraseña,
+            user.id_usuario
+        ],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Usuario actualizado: ', res);
+                result(null, res, {message: 'Usuario actualizado'});
             }
         }
     )

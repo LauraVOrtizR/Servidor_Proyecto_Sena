@@ -67,13 +67,12 @@ module.exports = {
             }
             return res.status(200).json({
                 success: true,
-                message: res.message,
-                data: data //Datos del usuario eliminado
+                message: res.message
             });
         });
     },
 
-    getPerfil (req, res){
+    getUsuario (req, res){
         const id_usuario = req.query.id_usuario || null;
         if(!id_usuario) {
             return res.status(400).json({
@@ -102,6 +101,24 @@ module.exports = {
                 success: true,
                 message: res.message,
                 data: data //Datos del usuario
+            });
+        });
+    },
+
+    updateUsuario (req, res){
+        const user = req.body;
+        Usuario.updateUsuario(user, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al actualizar el usuario',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos del usuario actualizado
             });
         });
     }
