@@ -52,4 +52,45 @@ Producto.create = ( producto, result ) => {
     )
 }
 
+Producto.read = ( result ) => {
+    const sql = `SELECT nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponible
+    FROM Productos
+    JOIN categorias ON productos.id_categoria = categorias.id_categoria 
+    JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto`; // Consulta para leer todos los productos
+    db.query(
+        sql,
+        [],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos del producto: ', res );
+                result( null, res );
+            }
+        }
+    )
+}
+
+Producto.delete = ( producto, result ) => {
+    const sql = `UPDATE productos SET estado_producto = 0 WHERE id_producto = ?`;
+    db.query(
+        sql,
+        [
+            producto.id_producto
+        ],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Id del producto eliminado: ', res );
+                result( null, res, { message: 'Producto eliminado' } );
+            }
+        }
+    )
+}
+
 module.exports = Producto;
