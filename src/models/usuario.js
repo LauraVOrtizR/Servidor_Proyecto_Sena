@@ -94,7 +94,7 @@ Usuario.updatePerfil = (user, result) => {
 };
 
 Usuario.deletePerfil = (user, result) => {
-    const sql = 'DELETE FROM usuarios WHERE id_usuario = ?'
+    const sql = `UPDATE usuarios SET estado = 0 WHERE id_usuario = ?`
     ;
     db.query(
         sql,
@@ -129,7 +129,7 @@ Usuario.getUsusario = (user, result) => {
             }
         }
     )
-}
+};
 
 Usuario.updateUsuario = (user, result) => {
     const sql = `UPDATE usuarios SET nombre_usuario = ?, tipo_documento = ?, numero_documento = ?,correo_electronico = ?, contraseña = ? WHERE id_usuario = ?`
@@ -155,7 +155,7 @@ Usuario.updateUsuario = (user, result) => {
             }
         }
     )
-}
+};
 
 module.exports = Usuario;
 

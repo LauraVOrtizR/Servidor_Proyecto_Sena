@@ -83,7 +83,7 @@ module.exports = {
         const user = {
             id_usuario: id_usuario
         };
-        Usuario.getPerfil(user, (err, data) => {
+        Usuario.getUsusario(user, (err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,
