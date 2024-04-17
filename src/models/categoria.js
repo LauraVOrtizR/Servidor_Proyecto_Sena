@@ -20,7 +20,7 @@ Categoria.create = (category, result) => {
     )
 };
 
-Categoria.getCategoria = (category, result) => {
+Categoria.getCategoria = (result) => {
     const sql = 'SELECT nombre_categoria FROM categorias'
     ;
     db.query(
@@ -38,5 +38,44 @@ Categoria.getCategoria = (category, result) => {
         }
     )
 };
+
+Categoria.deleteCategoria = (category, result) => {
+    const sql = `UPDATE categorias SET estado_categoria = 0 WHERE id_categoria = ?`
+    ;
+    db.query(
+        sql,
+        [category.id_categoria],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Categoria eliminada: ', res);
+                result(null, res, {message: 'Categoria eliminada'});
+            }
+        }
+    )
+}
+
+Categoria.updateCategoria = (category, result) => {
+    const sql = `UPDATE categorias SET nombre_categoria = ? WHERE id_categoria = ?`
+    ;
+    db.query(
+        sql,
+        [category.nombre_categoria, 
+        category.id_categoria],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Categoria actualizada: ', res);
+                result(null, res, {message: 'Categoria actualizada'});
+            }
+        }
+    )
+}
 
 module.exports = Categoria;

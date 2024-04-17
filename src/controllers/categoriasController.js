@@ -33,5 +33,41 @@ module.exports = {
                 data: data
             });
         });
+    },
+
+    deleteCategoria(req, res) {
+        const category = req.body;
+        Categoria.deleteCategoria(category, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al eliminar la categoria',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data
+            });
+        });
+    },
+    
+    updateCategoriad(req, res) {
+        const category = req.body;
+        Categoria.updateCategoria(category, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al actualizar la categoria',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data
+            });
+        });
     }
 }
