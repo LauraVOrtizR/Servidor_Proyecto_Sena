@@ -56,8 +56,18 @@ module.exports = {
     },
 
     readDetails ( req, res ) {
-        console.log( 'Estoy ingresando al controlador de detalles.');
-        Producto.readDetails( ( err, data ) => {
+        const id_producto = req.body.id_producto || null; // Id del producto
+        if( !id_producto ) {
+            return res.status( 400 ).json({
+                success: false,
+                message: 'El id del producto es requerido'
+            });
+        }
+        const producto = {
+            id_producto: id_producto
+        };
+
+        Producto.readDetails ( producto, ( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -65,14 +75,19 @@ module.exports = {
                     error: err
                 });
             }
+            
+            if( data.length == 0 ){
+                res.status(200).json({
+                    success: false,
+                    message: 'Producto no encontrado',
+                });
+            }
+
             return res.status( 200 ).json({
                 success: true,
                 message: res.message,
                 data: data
             });
         });
-    },
+    }
 };
-
-
-
