@@ -93,4 +93,34 @@ Producto.delete = ( producto, result ) => {
     )
 }
 
+Producto.readDetails = ( producto, result ) => {
+    const sql = `SELECT nombre_producto, referencia_producto, nombre_almacen AS 'Ubicacion', cantidad_producto AS 'Cantidad', stock_minimo, promedio_costo AS 'Costo', precio_venta 'Precio', imagen FROM Productos
+        JOIN Almacenes_Productos ON Productos.id_producto = Almacenes_Productos.id_producto
+        JOIN Almacenes ON Almacenes_Productos.id_almacen = Almacenes.id_almacen
+        WHERE id_producto = ?`; // Consulta para leer los detalles de un producto
+    db.query(
+        sql,
+        [
+            producto.nombre_producto,
+            producto.referencia_producto,
+            producto.ubicacion,
+            producto.cantidad,
+            producto.stock_minimo,
+            producto.costo,
+            producto.precio,
+            producto.imagen
+        ],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos del producto: ', res );
+                result( null, res );
+            }
+        }
+    )
+}
+
 module.exports = Producto;

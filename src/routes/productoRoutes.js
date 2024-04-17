@@ -5,6 +5,6 @@ const productosController = require( '../controllers/productosController' ); // 
 router.post( '/productos' , productosController.create ); // Crear un producto
 router.get( '/productos' , productosController.read ); // Leer todos los productos
 router.put( '/productos_eliminar' , productosController.delete ); // Eliminar un producto
-router.get( '/productos/detalle?id_producto=?', productosController.readDetails ); // Leer los detalles de un producto
+router.get( '/productos/detalles?id_producto=?', productosController.readDetails ); // Leer los detalles de un producto
 
 module.exports = router; // Exportar el router para que pueda ser utilizado en otros archivos

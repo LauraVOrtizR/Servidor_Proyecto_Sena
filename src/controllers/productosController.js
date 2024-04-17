@@ -56,9 +56,8 @@ module.exports = {
     },
 
     readDetails ( req, res ) {
-        const producto = req.body; // Datos del producto
-        console.log( 'Leyendo detalles del producto con id: ', producto.id_producto);
-        Producto.readDetails( producto, ( err, data ) => {
+        console.log( 'Estoy ingresando al controlador de detalles.');
+        Producto.readDetails( ( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -69,12 +68,10 @@ module.exports = {
             return res.status( 200 ).json({
                 success: true,
                 message: res.message,
-                data: data // Datos del producto
+                data: data
             });
         });
     },
-
-    
 };
 
 
