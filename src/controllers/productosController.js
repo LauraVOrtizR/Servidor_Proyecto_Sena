@@ -56,7 +56,7 @@ module.exports = {
     },
 
     readDetails ( req, res ) {
-        const id_producto = req.body.id_producto || null; // Id del producto
+        const id_producto = req.query.id_producto || null; // Id del producto
         if( !id_producto ) {
             return res.status( 400 ).json({
                 success: false,
@@ -89,5 +89,61 @@ module.exports = {
                 data: data
             });
         });
-    }
+    },
+
+    updateDetails ( req, res ) {
+        const producto = req.body; // Datos del producto
+        Producto.updateDetails( producto, ( err, data ) => {
+            if( err ) {
+                res.status( 501 ).json({
+                    success: false,
+                    message: 'Error al actualizar los detalles del producto',
+                    error: err
+                });
+            }
+            return res.status( 200 ).json({
+                success: true,
+                message: res.message,
+                data: data // Datos del producto actualizado
+            });
+        });
+    },
+
+    readTransactions ( req, res ) {
+        console.log( 'id_producto:' , req.query.id_producto);
+        const id_producto = req.query.id_producto || null; // Id del producto
+        if( !id_producto ) {
+            return res.status( 400 ).json({
+                success: false,
+                message: 'El id del producto es requerido'
+            });
+        }
+        const producto = {
+            id_producto: id_producto
+        };
+
+        Producto.readTransactions ( producto, ( err, data ) => {
+            if( err ) {
+                res.status( 501 ).json({
+                    success: false,
+                    message: 'Error al leer los movimientos del producto',
+                    error: err
+                });
+            }
+            
+            if( data.length == 0 ){
+                res.status(200).json({
+                    success: false,
+                    message: 'Producto no encontrado',
+                });
+            }
+
+            return res.status( 200 ).json({
+                success: true,
+                message: res.message,
+                data: data
+            });
+        });
+    },
+
 };
