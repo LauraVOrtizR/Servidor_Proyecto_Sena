@@ -585,15 +585,19 @@ CREATE TABLE Almacenes_Productos(
 
     --Vista Operaciones
         --Consulta para mostrar movimientos del dia
-        SELECT entradas.id_entrada AS 'Referencia', nombre_producto, fecha_hora, origen_entrada, destino_entrada FROM entradas
-        JOIN Productos_entradas ON entradas.id_entrada = Productos_entradas.id_entrada
+        SELECT CONCAT('ENT', entradas.id_entrada) AS referencia, fecha_hora, nombre_producto, nombre_almacen AS origen, destino_entrada AS destino, CONCAT('+',cantidad_entrada) AS cantidad
+        FROM entradas 
+        JOIN Productos_entradas ON entradas.id_entrada = Productos_entradas.id_entrada 
         JOIN Productos ON Productos_entradas.id_producto = Productos.id_producto
-        WHERE fecha_hora > ? AND fecha_hora < ?
+        JOIN almacenes ON almacenes.id_almacen = entradas.id_almacen
+        WHERE fecha_hora > "2024-03-07" AND fecha_hora < "2024-04-05"
         UNION
-        SELECT salidas.id_salida AS 'Referencia', nombre_producto, fecha_hora, origen_salida, destino_salida FROM salidas
-        JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida
-        JOIN Productos ON productos.id_producto = productos_salidas.id_producto
-        WHERE fecha_hora > ? AND fecha_hora < ?
+        SELECT CONCAT('SAL', salidas.id_salida) AS referencia, fecha_hora, nombre_producto, nombre_almacen AS origen, destino_salida AS destino, CONCAT('-',cantidad_salida) AS cantidad 
+        FROM salidas 
+        JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida 
+        JOIN Productos ON productos_salidas.id_producto = Productos.id_producto 
+        JOIN almacenes ON almacenes.id_almacen = salidas.id_almacen
+        WHERE fecha_hora > "2024-03-07" AND fecha_hora < "2024-04-05";
 
     --Vista Crear Entrada
         --Consulta para crear una entrada
