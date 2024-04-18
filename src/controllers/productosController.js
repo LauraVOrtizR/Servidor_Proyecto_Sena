@@ -1,4 +1,5 @@
 const Producto = require( '../models/productos' ); // Traer el modelo de productos
+
 module.exports = {
     create( req, res ) {
         const producto = req.body; // Datos del producto
@@ -18,9 +19,9 @@ module.exports = {
         });
     },
 
-    read( req, res ) {
+    getAllProduct( req, res ) {
         console.log( 'Estoy ingresando al controlador.');
-        Producto.read(( err, data ) => {
+        Producto.getAllProduct(( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -55,7 +56,7 @@ module.exports = {
         });
     },
 
-    readDetails ( req, res ) {
+    getDetails ( req, res ) {
         const id_producto = req.query.id_producto || null; // Id del producto
         if( !id_producto ) {
             return res.status( 400 ).json({
@@ -67,7 +68,7 @@ module.exports = {
             id_producto: id_producto
         };
 
-        Producto.readDetails ( producto, ( err, data ) => {
+        Producto.getDetails ( producto, ( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -109,7 +110,7 @@ module.exports = {
         });
     },
 
-    readTransactions ( req, res ) {
+    getTransactions ( req, res ) {
         console.log( 'id_producto:' , req.query.id_producto);
         const id_producto = req.query.id_producto || null; // Id del producto
         if( !id_producto ) {
@@ -122,7 +123,7 @@ module.exports = {
             id_producto: id_producto
         };
 
-        Producto.readTransactions ( producto, ( err, data ) => {
+        Producto.getTransactions ( producto, ( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -145,5 +146,21 @@ module.exports = {
             });
         });
     },
+
+    getProvision ( req, res ) {
+        Producto.getProvision(( err, data ) => {
+            if( err ) {
+                res.status( 501 ).json({
+                    success: false,
+                    error: err
+                });
+            }
+            return res.status( 200 ).json({
+                success: true,
+                message: res.message,
+                data: data // Datos de los productos que necesitan abastecimiento
+            });
+        });
+    }
 
 };

@@ -57,7 +57,7 @@ Producto.create = ( producto, result ) => {
     )
 }
 
-Producto.read = ( result ) => {
+Producto.getAllProduct = ( result ) => {
     const sql = `
     SELECT 
         nombre_producto, 
@@ -111,7 +111,7 @@ Producto.delete = ( producto, result ) => {
     )
 }
 
-Producto.readDetails = ( producto, result ) => {
+Producto.getDetails = ( producto, result ) => {
     const sql = `
     SELECT nombre_producto,
         referencia_producto,
@@ -176,31 +176,25 @@ Producto.updateDetails = ( producto, result ) => {
 }
 
 
-Producto.readTransactions = ( producto, result ) => {
+Producto.getTransactions = ( producto, result ) => {
     const sql = `
-    SELECT  
-        CONCAT('ENT ', entradas.id_entrada) AS 'Referencia', 
-        fecha_hora, 
-        origen_entrada AS 'Origen', 
+    SELECT CONCAT('ENT ', entradas.id_entrada) AS 'Referencia',
+        fecha,
+        almacenes.nombre_almacen AS 'Origen',
         destino_entrada AS 'Destino'
-    FROM 
-        entradas
-    JOIN 
-        productos_entradas ON entradas.id_entrada = productos_entradas.id_entrada
-    WHERE 
-        productos_entradas.id_producto = ?
-    UNION ALL 
-    SELECT  
-        CONCAT('SAL ', salidas.id_salida) AS 'Referencia', 
-        fecha_hora, 
-        origen_salida AS 'Origen', 
+    FROM entradas
+    JOIN productos_entradas ON entradas.id_entrada = productos_entradas.id_entrada
+    JOIN almacenes ON entradas.id_almacen = almacenes.id_almacen
+    WHERE productos_entradas.id_producto = ?
+    UNION ALL
+    SELECT CONCAT('SAL ', salidas.id_salida) AS 'Referencia',
+        fecha,
+        almacenes.nombre_almacen AS 'Origen',
         destino_salida AS 'Destino'
-    FROM 
-        salidas
-    JOIN 
-        productos_salidas ON salidas.id_salida = productos_salidas.id_salida
-    WHERE 
-        productos_salidas.id_producto = ?;
+    FROM salidas
+    JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida
+    JOIN almacenes ON salidas.id_almacen = almacenes.id_almacen
+    WHERE productos_salidas.id_producto = ?;
     `; // Consulta para leer los movimientos de un producto
     db.query(
         sql,
@@ -208,6 +202,32 @@ Producto.readTransactions = ( producto, result ) => {
             producto.id_producto,
             producto.id_producto
         ],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos del producto: ', res );
+                result( null, res );
+            }
+        }
+    )
+}
+
+Producto.getProvision = ( result ) => {
+    const sql = `
+    SELECT nombre_producto,
+       referencia_producto,
+       stock_minimo,
+       cantidad_producto_almacen
+    FROM productos
+    JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
+    WHERE cantidad_producto_almacen <= stock_minimo;
+    `; // Consulta para leer los productos que necesitan abastecimiento
+    db.query(
+        sql,
+        [],
         ( err, res ) => {
             if( err ) {
                 console.log( 'error: ', err );
