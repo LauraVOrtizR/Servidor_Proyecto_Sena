@@ -53,8 +53,9 @@ module.exports = {
         });
     },
     
-    updateCategoriad(req, res) {
+    updateCategoria(req, res) {
         const category = req.body;
+        console.log( {message: 'Categoria a actualizada'})
         Categoria.updateCategoria(category, (err, data) => {
             if(err) {
                 res.status(501).json({
@@ -70,4 +71,4 @@ module.exports = {
             });
         });
     }
-}
+};
