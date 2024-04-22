@@ -41,7 +41,7 @@ CREATE TABLE Categorias(
 CREATE TABLE Entradas(    
     id_entrada INT AUTO_INCREMENT PRIMARY KEY,
     fecha_hora DATE NOT NULL,
-    destino_entrada VARCHAR(20) NOT NULL,
+    origen_entrada VARCHAR(20) NOT NULL,
     id_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen)
 );
@@ -601,42 +601,22 @@ CREATE TABLE Almacenes_Productos(
 
     --Vista Crear Entrada
         --Consulta para crear una entrada
-        SELECT id_producto FROM productos
-        WHERE id_producto = ?
+        INSERT INTO entradas(fecha, origen_entrada, id_almacen) VALUES (?,?,?)
 
-        INSERT INTO productos(referencia_producto, nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria) VALUES
-        (?,?,?,?,?,?,?)
-
-        SELECT cantidad_producto FROM almacenes_productos
-        WHERE id_producto = ?
-        
-        INSERT INTO almacenes_productos(id_almacen, id_producto, cantidad_producto_almacen)VALUES
-        (?,?,?)
-
-        UPDATE almacenes_productos
-        SET cantidad_producto_almacen = ?
-        WHERE id_producto = ?
-
-        INSERT INTO entradas (origen_entrada, destino_entrada) VALUES
-        (?,?)
-
-        INSERT INTO productos_entradas(id_entrada, id_producto, cantidad_entrada, precio_compra) VALUES
+        INSERT INTO productos_entradas(id_producto, id_entrada, cantidad_entrada, precio_compra) VALUES
         (?,?,?,?)
+
+        UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen + ? WHERE id_producto = ? AND id_almacen = ?
 
     --Vista Crear Salida
         --Consulta para crear una salida        
-        INSERT INTO salidas(origen_salida, destino_salida) VALUES
-        (?,?)
+        INSERT INTO salidas(fecha, destino_salida, id_almacen) VALUES
+        (?,?,?)
 
-        -- SELECT cantidad_producto_almacen FROM almacenes_productos
-        -- WHERE id_producto = ? AND id_almacen = ?
+        INSERT INTO productos_salidas(id_producto, id_salida, cantidad_salida) VALUES
+        (?,?,?)
 
-        -- INSERT INTO productos_salidas (id_salida, id_producto, cantidad_salida) VALUES
-        -- (?,?,?)
-
-        -- UPDATE almacenes_productos
-        -- SET cantidad_producto_almacen = cantidad_producto_almacen - ?
-        -- WHERE id_producto = ? AND id_almacen = ?    
+        UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen - ? WHERE id_producto = ? AND id_almacen = ?
 
 --Entidad Informes
     --Vista Informes
