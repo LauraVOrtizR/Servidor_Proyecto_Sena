@@ -44,5 +44,45 @@ module.exports = {
                 } 
             ); 
         }); 
-    } 
+    },
+
+    deleteAlmacen(req, res) {
+        const id_almacen = req.body.id_almacen;
+        Almacen.deleteAlmacen(id_almacen, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al actualizar el perfil',
+                    error: err
+                });
+            }
+            else {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Almacen actualizado',
+                    data: data
+                });
+            }
+        });
+    },
+
+    updateAlmacen(req, res) {
+        const id_almacen = req.body.id_almacen;
+        Almacen.updateAlmacen(id_almacen, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al actualizar el perfil',
+                    error: err
+                });
+            }
+            else {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Almacen actualizado',
+                    data: data
+                });
+            }
+        });
+    },
 };
