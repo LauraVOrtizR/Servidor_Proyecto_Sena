@@ -2,15 +2,18 @@ const Movimiento = require('../models/movimiento');
 module.exports = {
     
     getEntradasSalidas(req, res) {
-        const fecha = req.query.fecha || null;
-        if(!fecha) {
+        const fecha_inicio = req.query.fecha_inicio || null;
+        const fecha_fin = req.query.fecha_fin || null;
+        
+        if(!fecha_inicio || !fecha_fin) {
             return res.status(400).json({
                 success: false,
-                message: 'Falta la fecha y hora de la operación'
+                message: 'Falta la fecha de la operación'
             });
         }
         const operation = {
-            fecha: fecha
+            fecha_inicio: fecha_inicio,
+            fecha_fin: fecha_fin
         };
         Movimiento.getEntradasSalidas(operation, (err, data) => {
             if(err) {
