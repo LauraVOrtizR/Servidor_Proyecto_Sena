@@ -67,8 +67,8 @@ module.exports = {
     },
 
     updateAlmacen(req, res) {
-        const id_almacen = req.body.id_almacen;
-        Almacen.updateAlmacen(id_almacen, (err, data) => {
+        const store = req.body;
+        Almacen.updateAlmacen(store, (err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,
