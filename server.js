@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
 app.use(require('./src/routes/usuarioRoutes'));
 app.use(require('./src/routes/categoriaRoutes'));
 app.use(require('./src/routes/movimientoRoutes'));
+app.use(require('./src/routes/productoRoutes'));
+app.use(require('./src/routes/informesRoutes'));
 
 //Inicializar el servidor
 app.listen(3000, () => {
