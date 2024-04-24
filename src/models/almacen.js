@@ -1,5 +1,4 @@
 const db = require('../config/config');
-const { lock } = require('../routes/almacenRoutes');
 const Almacen = {};
 
 Almacen.create = (store, result) => {
@@ -73,7 +72,7 @@ Almacen.updateAlmacen = (store, result) => {
             store.nombre_almacen, 
             store.direccion_almacen, 
             store.descripcion_almacen, 
-            store.id_almacen,
+            store.id_almacen
         ], 
         (err, res) => {
             if (err) {
