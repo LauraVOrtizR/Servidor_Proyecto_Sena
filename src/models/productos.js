@@ -175,7 +175,6 @@ Producto.updateDetails = ( producto, result ) => {
     )
 }
 
-
 Producto.getTransactions = ( producto, result ) => {
     const sql = `
     SELECT CONCAT('ENT ', entradas.id_entrada) AS 'Referencia',

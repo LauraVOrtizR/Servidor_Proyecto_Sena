@@ -36,6 +36,23 @@ module.exports = {
         });
     },
 
+    getAllPerfil(req, res) {
+        Usuario.getAllPerfil((err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los perfiles',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos de los perfiles
+            });
+        });
+    },
+
     updatePerfil(req, res) {
         const user = req.body;
         Usuario.updatePerfil(user, (err, data) => {

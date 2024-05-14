@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const movimientosController = require('../controllers/movimientosController');
 
-router.get('/entradas-salidas', movimientosController.getEntradasSalidas);
+router.get('/entradasysalidas', movimientosController.getEntradasSalidas);
 router.post('/entradas', movimientosController.createEntrada);
 router.post('/salidas', movimientosController.createSalida);
 

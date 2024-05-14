@@ -70,6 +70,27 @@ Usuario.login = (user, result) => {
     )
 };
 
+Usuario.getAllPerfil = (result) => {
+    const sql = `SELECT nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
+    JOIN roles ON usuarios.id_rol = roles.id_rol 
+    WHERE usuarios.id_rol != 1`
+    ;
+    db.query(
+        sql, 
+        [],
+        (err, res) =>{
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Perfiles encontrados: ', res);
+                result(null, res);
+            }
+        }
+    )
+}
+
 Usuario.updatePerfil = (user, result) => {
     const sql = 'UPDATE usuarios SET nombre_usuario = ?, id_rol = ? WHERE id_usuario = ?'
     ;

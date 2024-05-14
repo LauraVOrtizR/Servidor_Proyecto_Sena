@@ -30,12 +30,14 @@ CREATE TABLE Almacenes(
     id_almacen INT AUTO_INCREMENT PRIMARY KEY, -- PK
     nombre_almacen VARCHAR(20) NOT NULL,
     direccion_almacen VARCHAR(30) NOT NULL,
-    descripcion_almacen VARCHAR(100) NOT NULL
+    descripcion_almacen VARCHAR(100) NOT NULL,
+    estado_almacen BOOLEAN DEFAULT 1 NOT NULL
 );
 
 CREATE TABLE Categorias(
     id_categoria INT AUTO_INCREMENT PRIMARY KEY, -- PK
-    nombre_categoria VARCHAR(20) NOT NULL
+    nombre_categoria VARCHAR(20) NOT NULL,
+    estado_categoria BOOLEAN DEFAULT 1 NOT NULL
 );
 
 CREATE TABLE Entradas(    
@@ -468,6 +470,11 @@ CREATE TABLE Almacenes_Productos(
         UPDATE usuarios
         SET estado = 0
         WHERE id_usuario = ?
+
+        --Consulta para mostrar los perfiles
+        SELECT nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
+        JOIN roles ON usuarios.id_rol = roles.id_rol 
+        WHERE usuarios.id_rol != 1
     
     --Vista Ajustes del Usuario
         --Consulta para mostrar datos del usuario
