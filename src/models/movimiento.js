@@ -60,7 +60,7 @@ Movimiento.createEntrada = (operation, result) => {
                     sql,
                     [
                         operation.id_producto,
-                        id_entrada,
+                        operation.id_entrada,
                         operation.cantidad_entrada,
                         operation.precio_compra
                     ],
@@ -120,7 +120,7 @@ Movimiento.createSalida = (operation, result) => {
                     sql,
                     [
                         operation.id_producto,
-                        id_salida,
+                        operation.id_salida,
                         operation.cantidad_salida,
                     ],
                     (err, res) => {
