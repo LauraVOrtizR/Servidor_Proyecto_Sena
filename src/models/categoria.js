@@ -21,7 +21,7 @@ Categoria.create = (category, result) => {
 };
 
 Categoria.getCategoria = (result) => {
-    const sql = 'SELECT nombre_categoria FROM categorias'
+    const sql = 'SELECT id_categoria, nombre_categoria FROM categorias'
     ;
     db.query(
         sql,
