@@ -1,5 +1,22 @@
 const Usuario = require('../models/usuario');
 module.exports = {
+    getAllDocumentos(req, res) {
+        Usuario.getAllDocumentos((err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los documentos',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos de los documentos
+            });
+        });
+    },
+
     register(req, res) {
         const user = req.body; //Datos del cliente
         Usuario.create(user, (err, data) => {

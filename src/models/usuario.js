@@ -1,6 +1,25 @@
 const db = require('../config/config');
 const Usuario = {};
 
+Usuario.getAllDocumentos = (result) => {
+    const sql = 'SELECT * FROM tipos_documentos'
+    ;
+    db.query(
+        sql,
+        [],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Documentos encontrados: ', res);
+                result(null, res);
+            }
+        }
+    )
+};
+
 Usuario.create = (user, result) => {
     const sql = 'SELECT COUNT(*) AS datos_existentes FROM usuarios WHERE correo_electronico = ? OR numero_documento = ?'
     ;
@@ -18,7 +37,7 @@ Usuario.create = (user, result) => {
                     result(null, {message: 'El usuario ya existe'});
                 }
                 else {
-                    const sql = 'INSERT INTO usuarios(nombre_usuario, tipo_documento, numero_documento, correo_electronico, contraseña, id_rol)VALUES (?, ?, ?, ?, ?, ?)' 
+                    const sql = 'INSERT INTO usuarios(nombre_usuario, id_tipo_documento, numero_documento, correo_electronico, contraseña, id_rol)VALUES (?, ?, ?, ?, ?, ?)' 
                     ;
                     db.query(
                         sql,

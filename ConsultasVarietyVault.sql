@@ -4,6 +4,11 @@ CREATE DATABASE VarietyVault;
 
 USE VarietyVault;
 
+CREATE TABLE tipos_documentos(
+    id_tipo_docuemento INT AUTO_INCREMENT PRIMARY KEY, -- PK
+    tipo_documento VARCHAR(10) NOT NULL
+);
+
 CREATE TABLE Permisos(
     id_permiso INT AUTO_INCREMENT PRIMARY KEY, -- PK
     nombre_permiso VARCHAR(50) NOT NULL
@@ -18,12 +23,13 @@ CREATE TABLE Usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY, -- PK
     nombre_usuario VARCHAR(50) NOT NULL,
     id_rol INT NOT NULL,
-    tipo_documento VARCHAR(5) NOT NULL,
+    id_tipo_docuemento INT NOT NULL,
     numero_documento INT NOT NULL UNIQUE,
     correo_electronico VARCHAR(50) NOT NULL UNIQUE,
     contraseña VARCHAR(10) NOT NULL,
     estado_usuario BOOLEAN DEFAULT 1 NOT NULL,    
-    FOREIGN KEY (id_rol) REFERENCES Roles(id_rol)
+    FOREIGN KEY (id_rol) REFERENCES Roles(id_rol),
+    FOREIGN KEY (id_tipo_documento) REFERENCES tipos_documentos(id_tipo_documento)
 );
 
 CREATE TABLE Almacenes(
@@ -112,6 +118,14 @@ CREATE TABLE Almacenes_Productos(
 
 -- DATOS PARA INGRESAR A LA BASE DE DATOS.
 -- Insertar en el orden en que estan. 
+
+-- Insertar 4 tipos de documentos
+    INSERT INTO tipos_documentos (tipo_documento)
+    VALUES
+        ('CC'),
+        ('CE'),
+        ('PA'),
+        ('NIT');
 
 -- Insertar 26 permisos
     INSERT INTO Permisos (nombre_permiso)
@@ -440,6 +454,10 @@ CREATE TABLE Almacenes_Productos(
 --Entidad Usuarios
 
     --Vista Registro de usuario/perfil
+
+        --Consulta para mostrar los tipos de documentos
+        SELECT * FROM tipos_documentos;
+
         --Consulta para el registro de un nuevo usuario haciendo click al boton registrar
         SELECT COUNT(*) AS datos_existentes FROM usuarios 
         WHERE correo_electronico = ? OR numero_documento = ?;

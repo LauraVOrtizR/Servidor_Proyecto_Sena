@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router(); //routes
 const usuariosController = require('../controllers/usuariosController');
 
+router.get('/usuarios', usuariosController.getAllDocumentos);
 router.post('/usuarios/registro', usuariosController.register); //
 router.post('/usuarios/login', usuariosController.login);
 router.post('/usuarios/perfiles/registro', usuariosController.register);
