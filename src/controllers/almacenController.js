@@ -46,6 +46,30 @@ module.exports = {
         }); 
     },
 
+    getAllAlmacenesByUser(req, res) {
+        const id_usuario = req.query.id_usuario;
+        if(!id_usuario) {
+            return res.status(400).json({
+                success: false,
+                message: 'Falta el id del usuario'
+            });
+        }
+        Almacen.getAllAlmacenesByUser(id_usuario, (err, data) => {
+            if(err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los almacenes',
+                    error: err
+                });
+            }
+            return res.status(202).json({
+                success: true,
+                message: 'Almacenes obtenidos',
+                data: data
+            });
+        });
+    },
+
     deleteAlmacen(req, res) {
         const id_almacen = req.body.id_almacen;
         Almacen.deleteAlmacen(id_almacen, (err, data) => {

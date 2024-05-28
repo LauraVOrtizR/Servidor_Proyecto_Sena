@@ -42,6 +42,26 @@ Almacen.getById = (store, result) => {
         });
 }
 
+Almacen.getAllAlmacenesByUser = (id_usuario, result) => {
+    const sql = `SELECT almacenes.id_almacen, nombre_almacen, direccion_almacen, descripcion_almacen, estado_almacen FROM almacenes  
+                JOIN almacenes_usuarios ON almacenes.id_almacen = almacenes_usuarios.id_almacen
+                WHERE id_usuario = ?`
+        ;
+    db.query(
+        sql,
+        [
+            id_usuario
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('error: ', err);
+                result(err, null);
+            } else {
+                result(null, res);
+            }
+        });
+}
+
 Almacen.deleteAlmacen = (store, result) => {
     const sql = 'UPDATE almacenes SET estado = 0 WHERE id_almacen = ?'
         ;
