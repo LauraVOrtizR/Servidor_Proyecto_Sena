@@ -67,7 +67,7 @@ Usuario.create = (user, result) => {
 };
 
 Usuario.login = (user, result) => {
-    const sql = 'SELECT id_usuario, id_rol, correo_electronico, contraseña  FROM usuarios WHERE correo_electronico = ? AND contraseña = ?'
+    const sql = 'SELECT id_usuario, id_rol, correo_electronico, nombre_usuario FROM usuarios WHERE correo_electronico = ? AND contraseña = ?'
     ;
     db.query(
         sql,

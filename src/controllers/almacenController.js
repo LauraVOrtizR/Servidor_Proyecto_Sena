@@ -46,7 +46,7 @@ module.exports = {
         }); 
     },
 
-    getAllAlmacenesByUser(req, res) {
+    getByUser(req, res) {
         const id_usuario = req.query.id_usuario;
         if(!id_usuario) {
             return res.status(400).json({
@@ -54,7 +54,7 @@ module.exports = {
                 message: 'Falta el id del usuario'
             });
         }
-        Almacen.getAllAlmacenesByUser(id_usuario, (err, data) => {
+        Almacen.getByUser(id_usuario, (err, data) => {
             if(err) {
                 return res.status(501).json({
                     success: false,
