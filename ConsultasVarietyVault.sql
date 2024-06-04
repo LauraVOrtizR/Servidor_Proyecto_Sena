@@ -5,7 +5,7 @@ CREATE DATABASE VarietyVault;
 USE VarietyVault;
 
 CREATE TABLE tipos_documentos(
-    id_tipo_docuemento INT AUTO_INCREMENT PRIMARY KEY, -- PK
+    id_tipo_documento INT AUTO_INCREMENT PRIMARY KEY, -- PK
     tipo_documento VARCHAR(10) NOT NULL
 );
 
@@ -253,14 +253,14 @@ CREATE TABLE Almacenes_Productos(
         ('REF030', 'Limpia vidrios', 7, 17500, 31500, 'image30.jpg', 1);
 
 -- Insertar 6 usuarios
-    INSERT INTO Usuarios (nombre_usuario, id_rol, tipo_documento, numero_documento, correo_electronico, contraseña)
+    INSERT INTO Usuarios (nombre_usuario, id_rol, id_tipo_documento, numero_documento, correo_electronico, contraseña)
     VALUES
-        ('User1', 1, 'CC', 123456789, 'user1@example.com', 'password1'),
-        ('User2', 2, 'CC', 987654321, 'user2@example.com', 'password2'),
-        ('User3', 3, 'CC', 456789123, 'user3@example.com', 'password3'),
-        ('User4', 3, 'CC', 321654987, 'user4@example.com', 'password4'),
-        ('User5', 2, 'CC', 789123456, 'user5@example.com', 'password5'),
-        ('User6', 2, 'CC', 654987321, 'user6@example.com', 'password6');
+        ('User1', 1, 1, 123456789, 'user1@example.com', 'password1'),
+        ('User2', 2, 2, 987654321, 'user2@example.com', 'password2'),
+        ('User3', 3, 2, 456789123, 'user3@example.com', 'password3'),
+        ('User4', 3, 3, 321654987, 'user4@example.com', 'password4'),
+        ('User5', 2, 1, 789123456, 'user5@example.com', 'password5'),
+        ('User6', 2, 1, 654987321, 'user6@example.com', 'password6');
 
 -- Insertar 3 almacenes
     INSERT INTO Almacenes (nombre_almacen, direccion_almacen, descripcion_almacen)
@@ -280,72 +280,72 @@ CREATE TABLE Almacenes_Productos(
         (3, 6);
 
 -- Insertar 30 entradas  
-    INSERT INTO Entradas (fecha_hora, origen_entrada, destino_entrada, id_almacen)
+    INSERT INTO Entradas (fecha_hora, origen_entrada, id_almacen)
     VALUES
-        ('2024-03-07', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-08', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-09', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-10', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-11', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-12', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-13', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-14', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-15', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-16', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-17', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-18', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-19', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-20', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-21', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-22', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-23', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-24', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-25', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-26', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-27', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-28', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-29', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-30', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-31', 'Origen 1', 'Destino 1', 1),
-        ('2024-04-01', 'Origen 2', 'Destino 2', 2),
-        ('2024-04-02', 'Origen 3', 'Destino 3', 3),
-        ('2024-04-03', 'Origen 1', 'Destino 1', 1),
-        ('2024-04-04', 'Origen 2', 'Destino 2', 2),
-        ('2024-04-05', 'Origen 3', 'Destino 3', 3);
+        ('2024-03-07', 'Origen 1', 1),
+        ('2024-03-08', 'Origen 2', 2),
+        ('2024-03-09', 'Origen 3', 3),
+        ('2024-03-10', 'Origen 1', 1),
+        ('2024-03-11', 'Origen 2', 2),
+        ('2024-03-12', 'Origen 3', 3),
+        ('2024-03-13', 'Origen 1', 1),
+        ('2024-03-14', 'Origen 2', 2),
+        ('2024-03-15', 'Origen 3', 3),
+        ('2024-03-16', 'Origen 1', 1),
+        ('2024-03-17', 'Origen 2', 2),
+        ('2024-03-18', 'Origen 3', 3),
+        ('2024-03-19', 'Origen 1', 1),
+        ('2024-03-20', 'Origen 2', 2),
+        ('2024-03-21', 'Origen 3', 3),
+        ('2024-03-22', 'Origen 1', 1),
+        ('2024-03-23', 'Origen 2', 2),
+        ('2024-03-24', 'Origen 3', 3),
+        ('2024-03-25', 'Origen 1', 1),
+        ('2024-03-26', 'Origen 2', 2),
+        ('2024-03-27', 'Origen 3', 3),
+        ('2024-03-28', 'Origen 1', 1),
+        ('2024-03-29', 'Origen 2', 2),
+        ('2024-03-30', 'Origen 3', 3),
+        ('2024-03-31', 'Origen 1', 1),
+        ('2024-04-01', 'Origen 2', 2),
+        ('2024-04-02', 'Origen 3', 3),
+        ('2024-04-03', 'Origen 1', 1),
+        ('2024-04-04', 'Origen 2', 2),
+        ('2024-04-05', 'Origen 3', 3);
 
 -- Insertar 30 salidas
-    INSERT INTO Salidas (fecha_hora, origen_salida, destino_salida, id_almacen)
+    INSERT INTO Salidas (fecha_hora, destino_salida, id_almacen)
     VALUES
-        ('2024-03-07', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-08', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-09', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-10', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-11', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-12', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-13', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-14', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-15', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-16', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-17', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-18', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-19', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-20', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-21', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-22', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-23', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-24', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-25', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-26', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-27', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-28', 'Origen 1', 'Destino 1', 1),
-        ('2024-03-29', 'Origen 2', 'Destino 2', 2),
-        ('2024-03-30', 'Origen 3', 'Destino 3', 3),
-        ('2024-03-31', 'Origen 1', 'Destino 1', 1),
-        ('2024-04-01', 'Origen 2', 'Destino 2', 2),
-        ('2024-04-02', 'Origen 3', 'Destino 3', 3),
-        ('2024-04-03', 'Origen 1', 'Destino 1', 1),
-        ('2024-04-04', 'Origen 2', 'Destino 2', 2),
-        ('2024-04-05', 'Origen 3', 'Destino 3', 3);
+        ('2024-03-07', 'Destino 1', 1),
+        ('2024-03-08', 'Destino 2', 2),
+        ('2024-03-09', 'Destino 3', 3),
+        ('2024-03-10', 'Destino 1', 1),
+        ('2024-03-11', 'Destino 2', 2),
+        ('2024-03-12', 'Destino 3', 3),
+        ('2024-03-13', 'Destino 1', 1),
+        ('2024-03-14', 'Destino 2', 2),
+        ('2024-03-15', 'Destino 3', 3),
+        ('2024-03-16', 'Destino 1', 1),
+        ('2024-03-17', 'Destino 2', 2),
+        ('2024-03-18', 'Destino 3', 3),
+        ('2024-03-19', 'Destino 1', 1),
+        ('2024-03-20', 'Destino 2', 2),
+        ('2024-03-21', 'Destino 3', 3),
+        ('2024-03-22', 'Destino 1', 1),
+        ('2024-03-23', 'Destino 2', 2),
+        ('2024-03-24', 'Destino 3', 3),
+        ('2024-03-25', 'Destino 1', 1),
+        ('2024-03-26', 'Destino 2', 2),
+        ('2024-03-27', 'Destino 3', 3),
+        ('2024-03-28', 'Destino 1', 1),
+        ('2024-03-29', 'Destino 2', 2),
+        ('2024-03-30', 'Destino 3', 3),
+        ('2024-03-31', 'Destino 1', 1),
+        ('2024-04-01', 'Destino 2', 2),
+        ('2024-04-02', 'Destino 3', 3),
+        ('2024-04-03', 'Destino 1', 1),
+        ('2024-04-04', 'Destino 2', 2),
+        ('2024-04-05', 'Destino 3', 3);
 
 -- Insertar 30 productos_entradas
     INSERT INTO Productos_entradas (id_producto, id_entrada, cantidad_entrada, precio_compra)

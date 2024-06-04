@@ -31,7 +31,7 @@ Almacen.asignAlmacen = (store, result) => {
         sql,
         [
             store.id_almacen,
-            store.id_usuario
+            store.id_usuario,
         ],
         (err, res) => {
             if (err) {
