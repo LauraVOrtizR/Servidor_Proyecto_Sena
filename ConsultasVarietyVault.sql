@@ -16,14 +16,14 @@ CREATE TABLE Permisos(
 
 CREATE TABLE Roles(
     id_rol INT AUTO_INCREMENT PRIMARY KEY, -- PK
-    nombre_rol VARCHAR(20) NOT NULL,
+    nombre_rol VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY, -- PK
     nombre_usuario VARCHAR(50) NOT NULL,
     id_rol INT NOT NULL,
-    id_tipo_docuemento INT NOT NULL,
+    id_tipo_documento INT NOT NULL,
     numero_documento INT NOT NULL UNIQUE,
     correo_electronico VARCHAR(50) NOT NULL UNIQUE,
     contraseña VARCHAR(10) NOT NULL,
