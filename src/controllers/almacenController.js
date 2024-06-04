@@ -18,6 +18,24 @@ module.exports = {
         });
     },
 
+    asignAlmacen(req, res) {
+        const store = req.body;
+        Almacen.asignAlmacen(store, (err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al asignar el almacen',
+                    error: err
+                });
+            }
+            return res.status(201).json({
+                success: true,
+                message: res.message,
+                data: data //Id del almacen asignado
+            });
+        });
+    },
+
     getById (req, res) { 
         const id_almacen = req.query.id_almacen;
         if(!id_almacen){

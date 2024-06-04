@@ -511,6 +511,10 @@ CREATE TABLE Almacenes_Productos(
         INSERT INTO Almacenes (nombre_almacen, direccion_almacen, descripcion_almacen)
         VALUES (?, ?, ?)
 
+        --Consulta para asignar un almacen
+        INSERT INTO almacenes_usuarios (id_usuario, id_almacen)
+        VALUES (?, ?)
+
     --Vista Mis Inventarios
         --Consulta para mostrar los inventarios
         SELECT nombre_almacen, direccion_almacen, descripcion_almacen FROM almacenes

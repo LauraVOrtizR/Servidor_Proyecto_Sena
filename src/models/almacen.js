@@ -24,6 +24,28 @@ Almacen.create = (store, result) => {
     )
 }
 
+Almacen.asignAlmacen = (store, result) => {
+    const sql = `INSERT INTO almacenes_usuarios (id_almacen, id_usuario)VALUES (?, ?)`
+        ;
+    db.query(
+        sql,
+        [
+            store.id_almacen,
+            store.id_usuario
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else {
+                console.log('Id del almacen asignado: ', res.insertId);
+                result(null, res.insertId, { message: 'Almacen asignado' });
+            }
+        }
+    )
+}
+
 Almacen.getById = (store, result) => {
     const sql = 'SELECT nombre_almacen, direccion_almacen, descripcion_almacen FROM almacenes WHERE id_almacen = ?'
         ;
