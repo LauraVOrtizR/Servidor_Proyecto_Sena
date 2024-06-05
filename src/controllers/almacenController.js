@@ -37,7 +37,7 @@ module.exports = {
     },
 
     getById (req, res) { 
-        const id_almacen = req.query.id_almacen;
+        const id_almacen = req.query;
         if(!id_almacen){
             return res.status(400).json({
                 success: false,
