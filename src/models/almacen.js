@@ -64,7 +64,7 @@ Almacen.getById = (store, result) => {
         });
 }
 
-Almacen.getByUser = (id_usuario, result) => {
+Almacen.getByUser = (store, result) => {
     const sql = `SELECT almacenes.id_almacen, nombre_almacen, direccion_almacen, descripcion_almacen, estado_almacen FROM almacenes  
                 JOIN almacenes_usuarios ON almacenes.id_almacen = almacenes_usuarios.id_almacen
                 WHERE id_usuario = ?`
@@ -72,7 +72,7 @@ Almacen.getByUser = (id_usuario, result) => {
     db.query(
         sql,
         [
-            id_usuario
+            store.id_usuario
         ],
         (err, res) => {
             if (err) {
@@ -85,7 +85,7 @@ Almacen.getByUser = (id_usuario, result) => {
 }
 
 Almacen.deleteAlmacen = (store, result) => {
-    const sql = 'UPDATE almacenes SET estado = 0 WHERE id_almacen = ?'
+    const sql = `UPDATE almacenes SET estado_almacen = 0 WHERE id_almacen = ?`
         ;
     db.query(
         sql,
