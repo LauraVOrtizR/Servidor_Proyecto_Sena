@@ -57,7 +57,7 @@ Producto.create = ( producto, result ) => {
     )
 }
 
-Producto.getAllProduct = ( result ) => {
+Producto.getAllProduct = (producto, result ) => {
     const sql = `
     SELECT 
         nombre_producto, 
@@ -70,10 +70,13 @@ Producto.getAllProduct = ( result ) => {
         categorias ON productos.id_categoria = categorias.id_categoria 
     JOIN 
         almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
+    WHERE id_almacen = ? AND estado_producto = 1
 `; // Consulta para leer todos los productos
     db.query(
         sql,
-        [],
+        [
+            producto.id_almacen
+        ],
         ( err, res ) => {
             if( err ) {
                 console.log( 'error: ', err );

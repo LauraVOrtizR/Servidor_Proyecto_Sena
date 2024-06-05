@@ -20,8 +20,14 @@ module.exports = {
     },
 
     getAllProduct( req, res ) {
-        console.log( 'Estoy ingresando al controlador.');
-        Producto.getAllProduct(( err, data ) => {
+        const id_almacen = req.query
+        if(!id_almacen){
+            return res.status(400).json({
+                success: false,
+                message: 'Falta el id del almacen' 
+            });
+        }; 
+        Producto.getAllProduct(id_almacen,( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
