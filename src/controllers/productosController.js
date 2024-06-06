@@ -1,7 +1,7 @@
 const Producto = require( '../models/productos' ); // Traer el modelo de productos
 
 module.exports = {
-    create( req, res ) {
+    createProduct( req, res ) {
         const producto = req.body; // Datos del producto
         Producto.create( producto, ( err, data ) => {
             if( err ) {
@@ -43,7 +43,7 @@ module.exports = {
         });
     },
 
-    delete( req, res ) {
+    deleteProduct( req, res ) {
         const producto = req.body; // Datos del producto
         console.log( 'Eliminando producto con id: ', producto.id_producto);
         Producto.delete( producto, ( err, data ) => {
@@ -62,7 +62,7 @@ module.exports = {
         });
     },
 
-    getDetails ( req, res ) {
+    getDetailsProduct ( req, res ) {
         const id_producto = req.query.id_producto || null; // Id del producto
         if( !id_producto ) {
             return res.status( 400 ).json({
@@ -98,7 +98,7 @@ module.exports = {
         });
     },
 
-    updateDetails ( req, res ) {
+    updateDetailsProduct ( req, res ) {
         const producto = req.body; // Datos del producto
         Producto.updateDetails( producto, ( err, data ) => {
             if( err ) {
@@ -116,7 +116,7 @@ module.exports = {
         });
     },
 
-    getTransactions ( req, res ) {
+    getTransactionsProduct ( req, res ) {
         console.log( 'id_producto:' , req.query.id_producto);
         const id_producto = req.query.id_producto || null; // Id del producto
         if( !id_producto ) {
@@ -153,7 +153,7 @@ module.exports = {
         });
     },
 
-    getProvision ( req, res ) {
+    getProvisionProduct ( req, res ) {
         Producto.getProvision(( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
