@@ -23,6 +23,7 @@ Producto.create = ( producto, result ) => {
                 console.log( 'Datos existentes: ', res[0] );
                 if( res[0].datos_existentes > 0 ) {
                     result( null, { message: 'El producto ya existe' } );
+                    console.log( result );
                 }
                 else {
                     const sql = `
@@ -51,6 +52,35 @@ Producto.create = ( producto, result ) => {
                             }
                         }
                     )
+                }
+            }
+        }
+    )
+}
+
+Producto.assign = ( producto, result ) => {
+    const sql = `
+    INSERT INTO 
+        almacenes_productos(id_producto, id_almacen, cantidad_producto_almacen) 
+    VALUES
+        (?,?,?)
+    `;
+    db.query(
+        sql,
+        [
+            producto.id_producto,
+            producto.id_almacen,
+            producto.cantidad_producto_almacen
+        ],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos existentes: ', res[0] );
+                if( res[0].datos_existentes > 0 ) {
+                    result( null, { message: 'El producto ya esta asignado' } );
                 }
             }
         }

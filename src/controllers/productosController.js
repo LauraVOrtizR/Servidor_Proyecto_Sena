@@ -19,6 +19,24 @@ module.exports = {
         });
     },
 
+    assignProduct( req, res ) {
+        const producto = req.body; // Datos del producto
+        Producto.assign( producto, ( err, data ) => {
+            if( err ) {
+                res.status( 501 ).json({
+                    success: false,
+                    message: 'Error al asignar el producto',
+                    error: err
+                });
+            }
+            return res.status( 201 ).json({
+                success: true,
+                message: res.message,
+                data: data // Id del producto asignado
+            });
+        }); 
+    },
+
     getAllProduct( req, res ) {
         const id_almacen = req.query
         if(!id_almacen){
