@@ -1,6 +1,6 @@
 const Categoria = require('../models/categoria');
 module.exports = {
-    create(req, res) {
+    createCategory(req, res) {
         const category = req.body;
         Categoria.create(category, (err, data) => {
             if(err) {
@@ -18,8 +18,9 @@ module.exports = {
         });
     },
 
-    getCategoria(req, res) {
-        Categoria.getCategoria ((err, data) => {
+    getCategory(req, res) {
+        const category = req.query;
+        Categoria.getCategoria (category,(err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,
@@ -35,7 +36,7 @@ module.exports = {
         });
     },
 
-    deleteCategoria(req, res) {
+    deleteCategory(req, res) {
         const category = req.body;
         Categoria.deleteCategoria(category, (err, data) => {
             if(err) {
@@ -53,7 +54,7 @@ module.exports = {
         });
     },
     
-    updateCategoria(req, res) {
+    updateCategory(req, res) {
         const category = req.body;
         console.log( {message: 'Categoria a actualizada'})
         Categoria.updateCategoria(category, (err, data) => {

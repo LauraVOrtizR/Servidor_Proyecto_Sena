@@ -19,25 +19,7 @@ module.exports = {
         });
     },
 
-    assignProduct( req, res ) {
-        const producto = req.body; // Datos del producto
-        Producto.assign( producto, ( err, data ) => {
-            if( err ) {
-                res.status( 501 ).json({
-                    success: false,
-                    message: 'Error al asignar el producto',
-                    error: err
-                });
-            }
-            return res.status( 201 ).json({
-                success: true,
-                message: res.message,
-                data: data // Id del producto asignado
-            });
-        }); 
-    },
-
-    getAllProduct( req, res ) {
+    getAllProductAlmacen( req, res ) {
         const id_almacen = req.query
         if(!id_almacen){
             return res.status(400).json({
@@ -82,14 +64,16 @@ module.exports = {
 
     getDetailsProduct ( req, res ) {
         const id_producto = req.query.id_producto || null; // Id del producto
-        if( !id_producto ) {
+        const id_almacen = req.query.id_almacen || null; // Id del almacen
+        if( !id_producto || !id_almacen) {
             return res.status( 400 ).json({
                 success: false,
-                message: 'El id del producto es requerido'
+                message: 'El id del producto y del almacen son requeridos'
             });
         }
         const producto = {
-            id_producto: id_producto
+            id_producto: id_producto,
+            id_almacen: id_almacen
         };
 
         Producto.getDetails ( producto, ( err, data ) => {

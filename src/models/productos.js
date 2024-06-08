@@ -3,16 +3,16 @@ const Producto = {}; // Crear el objeto Producto
 
 Producto.create = ( producto, result ) => {
     const sql = `
-    SELECT COUNT(*) AS datos_existentes
-    FROM almacenes_productos
-    JOIN productos ON almacenes_productos.id_producto = productos.id_producto 
-    WHERE nombre_producto = ? OR referencia_producto = ?;
+        SELECT COUNT(*) AS datos_existentes FROM almacenes_productos
+        JOIN productos ON almacenes_productos.id_producto = productos.id_producto 
+        WHERE (nombre_producto = ? OR referencia_producto = ?) AND id_almacen = ?;
     `; // Consulta para verificar si el producto ya existe
     db.query( // Ejecutar la consulta
         sql,
         [
             producto.nombre_producto,
-            producto.referencia_producto
+            producto.referencia_producto,
+            producto.id_almacen
         ],
         ( err, res ) => {
             if( err ) {
@@ -22,18 +22,16 @@ Producto.create = ( producto, result ) => {
             else{
                 console.log( 'Datos existentes: ', res[0] );
                 if( res[0].datos_existentes > 0 ) {
-                    result( null, { message: 'El producto ya existe' } );
-                    console.log( result );
+                    result(null, { message: 'El producto ya existe' });
                 }
                 else {
                     const sql = `
-                    INSERT INTO productos(referencia_producto, nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria) 
-                    VALUES (?,?,?,?,?,?,?)
+                    INSERT INTO productos(nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria) 
+                    VALUES (?,?,?,?,?,?)
                     `; // Consulta para insertar un producto
                     db.query(
                         sql,
                         [
-                            producto.referencia_producto,
                             producto.nombre_producto,
                             producto.stock_minimo,
                             producto.promedio_costo,
@@ -47,8 +45,30 @@ Producto.create = ( producto, result ) => {
                                 result( err, null );
                             }
                             else{
-                                console.log( 'Id del nuevo producto: ', res.insertId );
-                                result( null, res.insertId, { message: 'Producto creado' } );
+                                let id_producto = res.insertId;
+                                const sql = `
+                                INSERT INTO almacenes_productos(id_almacen, id_producto, referencia_producto, cantidad_producto_almacen)
+                                VALUES (?,?,?,?)
+                                `;
+                                db.query(
+                                    sql,
+                                    [
+                                        producto.id_almacen,
+                                        id_producto,
+                                        producto.referencia_producto,
+                                        producto.cantidad_producto_almacen
+                                    ],
+                                    ( err, res ) => {
+                                        if( err ) {
+                                            console.log( 'error: ', err );
+                                            result( err, null );
+                                        }
+                                        else{
+                                            console.log( 'Id del nuevo producto: ', id_producto );
+                                            result( null, {id_producto, message: 'Producto creado' } );
+                                        }
+                                    }
+                                )
                             }
                         }
                     )
@@ -58,49 +78,13 @@ Producto.create = ( producto, result ) => {
     )
 }
 
-Producto.assign = ( producto, result ) => {
-    const sql = `
-    INSERT INTO 
-        almacenes_productos(id_producto, id_almacen, cantidad_producto_almacen) 
-    VALUES
-        (?,?,?)
-    `;
-    db.query(
-        sql,
-        [
-            producto.id_producto,
-            producto.id_almacen,
-            producto.cantidad_producto_almacen
-        ],
-        ( err, res ) => {
-            if( err ) {
-                console.log( 'error: ', err );
-                result( err, null );
-            }
-            else{
-                console.log( 'Datos existentes: ', res[0] );
-                if( res[0].datos_existentes > 0 ) {
-                    result( null, { message: 'El producto ya esta asignado' } );
-                }
-            }
-        }
-    )
-}
-
 Producto.getAllProduct = (producto, result ) => {
     const sql = `
-    SELECT 
-        nombre_producto, 
-        referencia_producto, 
-        nombre_categoria, 
-        cantidad_producto_almacen AS cantidad_disponible
-    FROM 
-        Productos
-    JOIN 
-        categorias ON productos.id_categoria = categorias.id_categoria 
-    JOIN 
-        almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
-    WHERE id_almacen = ? AND estado_producto = 1
+    SELECT productos.id_producto, nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponible
+    FROM Productos
+    JOIN categorias ON productos.id_categoria = categorias.id_categoria
+    JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
+    WHERE almacenes_productos.id_almacen = ? AND estado_producto_almacen = 1
 `; // Consulta para leer todos los productos
     db.query(
         sql,
@@ -122,14 +106,15 @@ Producto.getAllProduct = (producto, result ) => {
 
 Producto.delete = ( producto, result ) => {
     const sql = `
-    UPDATE productos
-    SET estado_producto = 0
-    WHERE id_producto = ?
+    UPDATE almacenes_productos
+    SET estado_producto_almacen = 0
+    WHERE id_producto = ? AND id_almacen = ?
 `;
     db.query(
         sql,
         [
-            producto.id_producto
+            producto.id_producto,
+            producto.id_almacen
         ],
         ( err, res ) => {
             if( err ) {
@@ -146,23 +131,26 @@ Producto.delete = ( producto, result ) => {
 
 Producto.getDetails = ( producto, result ) => {
     const sql = `
-    SELECT nombre_producto,
-        referencia_producto,
-        nombre_almacen AS 'Ubicacion',
-        cantidad_producto_almacen AS 'Cantidad',
-        stock_minimo,
-        promedio_costo AS 'Costo',
-        precio_venta AS 'Precio',
-        imagen
-    FROM Productos
+    SELECT nombre_producto, 
+        referencia_producto, 
+        nombre_categoria, 
+        nombre_almacen AS 'Ubicacion', 
+        cantidad_producto_almacen AS 'Cantidad', 
+        stock_minimo, 
+        promedio_costo AS 'Costo', 
+        precio_venta 'Precio', 
+        imagen 
+    FROM Productos 
     JOIN Almacenes_Productos ON Productos.id_producto = Almacenes_Productos.id_producto
     JOIN Almacenes ON Almacenes_Productos.id_almacen = Almacenes.id_almacen
-    WHERE productos.id_producto = ?
+    JOIN categorias ON Productos.id_categoria = categorias.id_categoria
+    WHERE productos.id_producto = ? AND Almacenes.id_almacen = ?
     `; // Consulta para leer los detalles de un producto
     db.query(
         sql,
         [
-            producto.id_producto
+            producto.id_producto,
+            producto.id_almacen
         ],
         ( err, res ) => {
             if( err ) {
@@ -183,7 +171,8 @@ Producto.updateDetails = ( producto, result ) => {
     SET nombre_producto = ?,
         stock_minimo = ?,
         precio_venta = ?,
-        imagen = ?
+        imagen = ?,
+        id_categoria = ?
     WHERE id_producto = ?
     `;
     db.query(
@@ -193,6 +182,7 @@ Producto.updateDetails = ( producto, result ) => {
             producto.stock_minimo,
             producto.precio_venta,
             producto.imagen,
+            producto.id_categoria,
             producto.id_producto
         ],
         ( err, res ) => {

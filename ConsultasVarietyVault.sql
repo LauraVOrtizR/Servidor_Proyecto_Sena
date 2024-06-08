@@ -64,14 +64,12 @@ CREATE TABLE Salidas(
 
 CREATE TABLE Productos(
     id_producto INT AUTO_INCREMENT PRIMARY KEY, -- PK
-    referencia_producto VARCHAR (10) NOT NULL UNIQUE,
     nombre_producto VARCHAR(100) NOT NULL,    
     stock_minimo INT NOT NULL,
     promedio_costo INT NOT NULL,
     precio_venta INT NOT NULL,
     imagen VARCHAR(250),
     id_categoria INT NOT NULL,
-    estado_producto BOOLEAN DEFAULT 1 NOT NULL,
     FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria)
 );
 
@@ -109,9 +107,19 @@ CREATE TABLE Productos_Salidas(
 CREATE TABLE Almacenes_Productos(
     id_almacen INT NOT NULL,
     id_producto INT NOT NULL,
+    referencia_producto VARCHAR (10) NOT NULL UNIQUE,
+    estado_producto_almacen BOOLEAN DEFAULT 1 NOT NULL,
     cantidad_producto_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
+);
+
+CREATE TABLE Almacenes_Categorias(
+    id_almacen INT NOT NULL,
+    id_categoria INT NOT NULL,
+    estado_categoria_almacen BOOLEAN DEFAULT 1 NOT NULL,
+    FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen),
+    FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria)
 );
 
 -- ______________________________________________________________________________________________________________________
@@ -219,38 +227,38 @@ CREATE TABLE Almacenes_Productos(
         ('Comida');
 
 -- Insertar 30 productos
-    INSERT INTO productos (referencia_producto, nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria)
+    INSERT INTO productos (nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria)
     VALUES
-        ('REF001', 'Jabón en polvo', 10, 21000, 35000, 'image1.jpg', 1),
-        ('REF002', 'Smartphone', 15, 28000, 45500, 'image2.jpg', 2),
-        ('REF003', 'Televisor LED', 20, 35000, 52500, 'image3.jpg', 2),
-        ('REF004', 'Laptop', 5, 14000, 28000, 'image4.jpg', 2),
-        ('REF005', 'Leche en polvo', 12, 24500, 42000, 'image5.jpg', 4),
-        ('REF006', 'Zapatos deportivos', 8, 17500, 31500, 'image6.jpg', 3),
-        ('REF007', 'Camisa de vestir', 18, 31500, 49000, 'image7.jpg', 3),
-        ('REF008', 'Detergente líquido', 25, 38500, 59500, 'image8.jpg', 1),
-        ('REF009', 'Cereal de desayuno', 3, 10450, 24450, 'image9.jpg', 4),
-        ('REF010', 'Gorra de moda', 7, 17500, 31500, 'image10.jpg', 3),
-        ('REF011', 'Toalla de baño', 10, 21000, 35000, 'image11.jpg', 3),
-        ('REF012', 'Reloj de pulsera', 15, 28000, 45500, 'image12.jpg', 3),
-        ('REF013', 'Cámara digital', 20, 35000, 52500, 'image13.jpg', 2),
-        ('REF014', 'Auriculares inalámbricos', 5, 14000, 28000, 'image14.jpg', 2),
-        ('REF015', 'Botella de agua', 12, 24500, 42000, 'image15.jpg', 4),
-        ('REF016', 'Pantalones casuales', 8, 17500, 31500, 'image16.jpg', 3),
-        ('REF017', 'Xbox', 18, 31500, 49000, 'image17.jpg', 2),
-        ('REF018', 'Desinfectante', 25, 38500, 59500, 'image18.jpg', 1),
-        ('REF019', 'Decodificador', 3, 10450, 24450, 'image19.jpg', 2),
-        ('REF020', 'Salchichas', 7, 17500, 31500, 'image20.jpg', 4),
-        ('REF021', 'Suavitel', 10, 21000, 35000, 'image21.jpg', 1),
-        ('REF022', 'Clorox', 15, 28000, 45500, 'image22.jpg', 1),
-        ('REF023', 'Cafe', 20, 35000, 52500, 'image23.jpg', 4),
-        ('REF024', 'Smartwatch', 5, 14000, 28000, 'image24.jpg', 2),
-        ('REF025', 'Ropa interior', 12, 24500, 42000, 'image25.jpg', 3),
-        ('REF026', 'Fabuloso', 8, 17500, 31500, 'image26.jpg', 1),
-        ('REF027', 'Juego de sábanas', 18, 31500, 49000, 'image27.jpg', 3),
-        ('REF028', 'Pan', 25, 38500, 59500, 'image28.jpg', 4),
-        ('REF029', 'Cartera', 3, 10450, 24450, 'image29.jpg', 3),
-        ('REF030', 'Limpia vidrios', 7, 17500, 31500, 'image30.jpg', 1);
+        ('Jabón en polvo', 10, 21000, 35000, 'image1.jpg', 1),
+        ('Smartphone', 15, 28000, 45500, 'image2.jpg', 2),
+        ('Televisor LED', 20, 35000, 52500, 'image3.jpg', 2),
+        ('Laptop', 5, 14000, 28000, 'image4.jpg', 2),
+        ('Leche en polvo', 12, 24500, 42000, 'image5.jpg', 4),
+        ('Zapatos deportivos', 8, 17500, 31500, 'image6.jpg', 3),
+        ('Camisa de vestir', 18, 31500, 49000, 'image7.jpg', 3),
+        ('Detergente líquido', 25, 38500, 59500, 'image8.jpg', 1),
+        ('Cereal de desayuno', 3, 10450, 24450, 'image9.jpg', 4),
+        ('Gorra de moda', 7, 17500, 31500, 'image10.jpg', 3),
+        ('Toalla de baño', 10, 21000, 35000, 'image11.jpg', 3),
+        ('Reloj de pulsera', 15, 28000, 45500, 'image12.jpg', 3),
+        ('Cámara digital', 20, 35000, 52500, 'image13.jpg', 2),
+        ('Auriculares inalámbricos', 5, 14000, 28000, 'image14.jpg', 2),
+        ('Botella de agua', 12, 24500, 42000, 'image15.jpg', 4),
+        ('Pantalones casuales', 8, 17500, 31500, 'image16.jpg', 3),
+        ('Xbox', 18, 31500, 49000, 'image17.jpg', 2),
+        ('Desinfectante', 25, 38500, 59500, 'image18.jpg', 1),
+        ('Decodificador', 3, 10450, 24450, 'image19.jpg', 2),
+        ('Salchichas', 7, 17500, 31500, 'image20.jpg', 4),
+        ('Suavitel', 10, 21000, 35000, 'image21.jpg', 1),
+        ('Clorox', 15, 28000, 45500, 'image22.jpg', 1),
+        ('Cafe', 20, 35000, 52500, 'image23.jpg', 4),
+        ('Smartwatch', 5, 14000, 28000, 'image24.jpg', 2),
+        ('Ropa interior', 12, 24500, 42000, 'image25.jpg', 3),
+        ('Fabuloso', 8, 17500, 31500, 'image26.jpg', 1),
+        ('Juego de sábanas', 18, 31500, 49000, 'image27.jpg', 3),
+        ('Pan', 25, 38500, 59500, 'image28.jpg', 4),
+        ('Cartera', 3, 10450, 24450, 'image29.jpg', 3),
+        ('Limpia vidrios', 7, 17500, 31500, 'image30.jpg', 1);
 
 -- Insertar 6 usuarios
     INSERT INTO Usuarios (nombre_usuario, id_rol, id_tipo_documento, numero_documento, correo_electronico, contraseña)
@@ -416,38 +424,54 @@ CREATE TABLE Almacenes_Productos(
         (30, 30, 3);
 
 -- Insertar 30 almacenes_productos
-    INSERT INTO Almacenes_Productos (id_almacen, id_producto, cantidad_producto_almacen)
+    INSERT INTO Almacenes_Productos (id_almacen, id_producto, referencia_producto, cantidad_producto_almacen)
     VALUES
-        (1, 1, 10),
-        (2, 2, 15),
-        (3, 3, 20),
-        (1, 4, 5),
-        (2, 5, 12),
-        (3, 6, 8),
-        (1, 7, 18),
-        (2, 8, 25),
-        (3, 9, 3),
-        (1, 10, 7),
-        (2, 11, 10),
-        (3, 12, 15),
-        (1, 13, 20),
-        (2, 14, 5),
-        (3, 15, 12),
-        (1, 16, 8),
-        (2, 17, 18),
-        (3, 18, 25),
-        (1, 19, 3),
-        (2, 20, 7),
-        (3, 21, 10),
-        (1, 22, 15),
-        (2, 23, 20),
-        (3, 24, 5),
-        (1, 25, 12),
-        (2, 26, 8),
-        (3, 27, 18),
-        (1, 28, 25),
-        (2, 29, 3),
-        (3, 30, 7);
+        (1, 1, 'REF001', 10),
+        (2, 2, 'REF002', 15),
+        (3, 3, 'REF003', 20),
+        (1, 4, 'REF004', 5),
+        (2, 5, 'REF005', 12),
+        (3, 6, 'REF006', 8),
+        (1, 7, 'REF007', 18),
+        (2, 8, 'REF008', 25),
+        (3, 9, 'REF009', 3),
+        (1, 10, 'REF010', 7),
+        (2, 11, 'REF011', 10),
+        (3, 12, 'REF012', 15),
+        (1, 13, 'REF013', 20),
+        (2, 14, 'REF014', 5),
+        (3, 15, 'REF015', 12),
+        (1, 16, 'REF016', 8),
+        (2, 17, 'REF017', 18),
+        (3, 18, 'REF018', 25),
+        (1, 19, 'REF019', 3),
+        (2, 20, 'REF020', 7),
+        (3, 21, 'REF021', 10),
+        (1, 22, 'REF022', 15),
+        (2, 23, 'REF023', 20),
+        (3, 24, 'REF024', 5),
+        (1, 25, 'REF025', 12),
+        (2, 26, 'REF026', 8),
+        (3, 27, 'REF027', 18),
+        (1, 28, 'REF028', 25),
+        (2, 29, 'REF029', 3),
+        (3, 30, 'REF030', 7);
+
+-- Insertar 9 almacenes_categorias
+    INSERT INTO Almacenes_Categorias (id_almacen, id_categoria)
+    VALUES
+        (1, 1),
+        (1, 2),
+        (1, 3),
+        (1, 4),
+        (2, 1),
+        (2, 2),
+        (2, 3),
+        (2, 4),
+        (3, 1),
+        (3, 2),
+        (3, 3),
+        (3, 4);
 
 -- ______________________________________________________________________________________________________________________
 
@@ -537,35 +561,43 @@ CREATE TABLE Almacenes_Productos(
     --Vista Stock
         --Consulta para crea un producto nuevo
         SELECT COUNT(*) AS datos_existentes FROM almacenes_productos
-        JOIN productos ON almacenes_productos.id_producto = productos.id_producto 
-        WHERE nombre_producto = ? OR referencia_producto = ?;
+        JOIN productos ON almacenes_productos.id_producto = productos.id_producto
+        WHERE (nombre_producto = ? OR referencia_producto = ?) AND id_almacen = ?;
 
-        INSERT INTO productos(referencia_producto, nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria) VALUES
-        (?,?,?,?,?,?,?)
+        INSERT INTO productos(nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria) VALUES
+        (?,?,?,?,?,?)
+
+        INSERT INTO almacenes_productos(id_almacen, id_producto, referencia_producto, cantidad_producto_almacen) VALUES
+        (?,?,?,?)
 
         --Consulta para mostrar la tabla de Stock
-        SELECT nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponeble FROM Productos
+        SELECT productos.id_producto, nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponeble 
+        FROM Productos
         JOIN categorias ON productos.id_categoria = categorias.id_categoria
         JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
+        WHERE almacenes_productos.id_almacen = ? AND estado_producto_almacen = 1
 
         --Consulta para eliminar un producto
-        DELETE FROM productos
-        WHERE id_producto = ?
+        UPDATE almacenes_productos
+        SET estado_producto_almacen = 0
+        WHERE id_producto = ? AND id_almacen = ?
 
     --Vista Detalles del Producto
 
         --Consulta para detalles del producto al dar click en Detalles del Producto
-        SELECT nombre_producto, referencia_producto, nombre_almacen AS 'Ubicacion', cantidad_producto AS 'Cantidad', stock_minimo, promedio_costo AS 'Costo', precio_venta 'Precio', imagen FROM Productos 
+        SELECT nombre_producto, referencia_producto, nombre_categoria, nombre_almacen AS 'Ubicacion', cantidad_producto_almacen AS 'Cantidad', stock_minimo, promedio_costo AS 'Costo', precio_venta 'Precio', imagen FROM Productos 
         JOIN Almacenes_Productos ON Productos.id_producto = Almacenes_Productos.id_producto
         JOIN Almacenes ON Almacenes_Productos.id_almacen = Almacenes.id_almacen
-        WHERE id_producto = ?
+        JOIN categorias ON Productos.id_categoria = categorias.id_categoria
+        WHERE productos.id_producto = ? AND Almacenes.id_almacen = ?
 
         --Consulta actualizacion datos del producto al editarlo y guardar cambios
         UPDATE Productos
         SET nombre_producto = ?
-        SET stock_minimo = ?
-        SET precio_venta = ?
-        SET imagen = ?
+            stock_minimo = ?
+            precio_venta = ?
+            imagen = ?
+            id_categoria = ?
         WHERE id_producto = ?
 
     --Vista Movimientos del Producto
@@ -592,17 +624,26 @@ CREATE TABLE Almacenes_Productos(
         
     --Vista Categorias vacia
         --Consulta para crear una categoria
+        SELECT COUNT(*) AS datos_existentes FROM almacenes_categorias
+        JOIN categorias ON almacenes_categorias.id_categoria = categorias.id_categoria
+        WHERE nombre_categoria = ? AND id_almacen = ?;
+
         INSERT INTO categorias(nombre_categoria) VALUES
         (?)
 
+        INSERT INTO almacenes_categorias(id_almacen, id_categoria) VALUES
+        (?,?)
+
     --Vista Categorias
         --Consulta para mostrar las categorias
-        SELECT nombre_categoria FROM categorias
+        SELECT categorias.id_categoria, nombre_categoria FROM categorias
+        JOIN almacenes_categorias ON categorias.id_categoria = almacenes_categorias.id_categoria
+        WHERE id_almacen = ?
 
         --Consulta para eliminar una categoria
-        UPDATE usuarios
-        SET estado = 0
-        WHERE id_usuario = ?
+        UPDATE almacenes_categorias
+        SET estado_categoria_almacen = 0
+        WHERE id_categoria = ? and id_almacen = ?
 
     --Vista Editar Categoria
         --Consulta para editar una categoria

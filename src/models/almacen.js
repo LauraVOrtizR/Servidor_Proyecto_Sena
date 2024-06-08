@@ -67,7 +67,7 @@ Almacen.getById = (store, result) => {
 Almacen.getByUser = (store, result) => {
     const sql = `SELECT almacenes.id_almacen, nombre_almacen, direccion_almacen, descripcion_almacen, estado_almacen FROM almacenes  
                 JOIN almacenes_usuarios ON almacenes.id_almacen = almacenes_usuarios.id_almacen
-                WHERE id_usuario = ?`
+                WHERE id_usuario = ? AND estado_almacen = 1`
         ;
     db.query(
         sql,
