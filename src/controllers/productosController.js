@@ -27,7 +27,7 @@ module.exports = {
                 message: 'Falta el id del almacen' 
             });
         }; 
-        Producto.getAllProduct(id_almacen,( err, data ) => {
+        Producto.getAllProductByStore(id_almacen,( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,
@@ -97,6 +97,24 @@ module.exports = {
                 message: res.message,
                 data: data
             });
+        });
+    },
+
+    getAllProduct(req, res){
+        Producto.getAllProduct(( err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los productos',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos de los documentos
+            });
+        
         });
     },
 

@@ -74,7 +74,6 @@ Usuario.login = (user, result) => {
         [
             user.correo_electronico,
             user.contraseña,
-            user.id_rol
         ],
         (err, res) => {
             if(err) {

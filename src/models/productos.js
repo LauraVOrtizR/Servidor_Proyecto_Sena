@@ -78,14 +78,14 @@ Producto.create = ( producto, result ) => {
     )
 }
 
-Producto.getAllProduct = (producto, result ) => {
+Producto.getAllProductByStore = (producto, result ) => {
     const sql = `
     SELECT productos.id_producto, nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponible
     FROM Productos
     JOIN categorias ON productos.id_categoria = categorias.id_categoria
     JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
     WHERE almacenes_productos.id_almacen = ? AND estado_producto_almacen = 1
-`; // Consulta para leer todos los productos
+    `; // Consulta para leer todos los productos
     db.query(
         sql,
         [
@@ -98,6 +98,26 @@ Producto.getAllProduct = (producto, result ) => {
             }
             else{
                 console.log( 'Datos del producto: ', res );
+                result( null, res );
+            }
+        }
+    )
+}
+
+Producto.getAllProduct = (result) => {
+    const sql = `
+    SELECT * FROM productos
+    `; //Consulta para leer todos los productos
+    db.query(
+        sql,
+        [],
+        ( err, res ) => {
+            if(err) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos de los productos: ', res );
                 result( null, res );
             }
         }
