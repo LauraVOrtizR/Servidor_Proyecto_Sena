@@ -11,7 +11,6 @@ Categoria.create = (category, result) => {
         sql,
         [
             category.nombre_categoria,
-            category.id_almacen
         ],
         (err, res) => {
             if(err) {
@@ -69,17 +68,12 @@ Categoria.create = (category, result) => {
     )
 };
 
-Categoria.getCategoria = (category, result) => {
-    const sql = `
-        SELECT categorias.id_categoria, nombre_categoria FROM categorias
-        JOIN almacenes_categorias ON categorias.id_categoria = almacenes_categorias.id_categoria
-        WHERE id_almacen = ?
-    `; // Consulta para obtener las categorias de un almacen
+Categoria.getCategoria = (result) => {
+    const sql = 'SELECT id_categoria, nombre_categoria FROM categorias'
+    ;
     db.query(
         sql,
-        [
-            category.id_almacen
-        ],
+        [],
         (err, res) => {
             if(err) {
                 console.log('error: ', err);
@@ -87,7 +81,7 @@ Categoria.getCategoria = (category, result) => {
             }
             else{
                 console.log('Datos de la categoria: ', res);
-                result(null, {res, message: 'Categoria obtenida'});
+                result(null, res, {message: 'Categoria obtenida'});
             }
         }
     )

@@ -19,8 +19,7 @@ module.exports = {
     },
 
     getCategory(req, res) {
-        const category = req.query;
-        Categoria.getCategoria (category,(err, data) => {
+        Categoria.getCategoria ((err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,

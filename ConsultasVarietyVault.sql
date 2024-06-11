@@ -107,20 +107,13 @@ CREATE TABLE Productos_Salidas(
 CREATE TABLE Almacenes_Productos(
     id_almacen INT NOT NULL,
     id_producto INT NOT NULL,
-    referencia_producto VARCHAR (10) NOT NULL UNIQUE,
+    referencia_producto VARCHAR (10) NOT NULL,
     estado_producto_almacen BOOLEAN DEFAULT 1 NOT NULL,
     cantidad_producto_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
 
-CREATE TABLE Almacenes_Categorias(
-    id_almacen INT NOT NULL,
-    id_categoria INT NOT NULL,
-    estado_categoria_almacen BOOLEAN DEFAULT 1 NOT NULL,
-    FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen),
-    FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria)
-);
 
 -- ______________________________________________________________________________________________________________________
 
@@ -457,21 +450,6 @@ CREATE TABLE Almacenes_Categorias(
         (2, 29, 'REF029', 3),
         (3, 30, 'REF030', 7);
 
--- Insertar 9 almacenes_categorias
-    INSERT INTO Almacenes_Categorias (id_almacen, id_categoria)
-    VALUES
-        (1, 1),
-        (1, 2),
-        (1, 3),
-        (1, 4),
-        (2, 1),
-        (2, 2),
-        (2, 3),
-        (2, 4),
-        (3, 1),
-        (3, 2),
-        (3, 3),
-        (3, 4);
 
 -- ______________________________________________________________________________________________________________________
 
