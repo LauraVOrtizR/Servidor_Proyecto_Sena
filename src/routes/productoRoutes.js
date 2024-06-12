@@ -3,6 +3,7 @@ const router = Router(); // Guardar el metodo Router en la variable router
 const productosController = require( '../controllers/productosController' ); // Traer el controlador de productos
 
 router.post( '/productos' , productosController.createProduct ); // Crear un producto
+router.post('/productos/asignar', productosController.assignProduct); // Asignar un producto a un almacen
 router.get( '/productos/almacen' , productosController.getAllProductAlmacen ); // Mostrar todos los productos por almacen
 router.get( '/productos' , productosController.getAllProduct ); // Mostrar todos los productos 
 router.put( '/productos/eliminar' , productosController.deleteProduct ); // Eliminar un producto

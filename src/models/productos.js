@@ -1,4 +1,5 @@
 const db = require( '../config/config' ); // Traer la configuracion de la base de datos
+const productosController = require('../controllers/productosController');
 const Producto = {}; // Crear el objeto Producto
 
 Producto.create = ( producto, result ) => {
@@ -78,6 +79,33 @@ Producto.create = ( producto, result ) => {
     )
 }
 
+Producto.assign = ( producto, result ) => {
+    const sql = 
+    `
+    INSERT INTO almacenes_productos(id_almacen, id_producto, referencia_producto, cantidad_producto_almacen)
+    VALUES (?,?,?,?)
+    `;
+    db.query(
+        sql,
+        [
+            producto.id_almacen,
+            producto.id_producto,
+            producto.referencia_producto,
+            producto.cantidad_producto_almacen
+        ],
+        ( err, res ) => {
+            if( err ) {
+                console.log( 'error: ', err );
+                result( err, null );
+            }
+            else{
+                console.log( 'Datos del producto: ', res );
+                result( null, res );
+            }
+        }
+    )
+}
+
 Producto.getAllProductByStore = (producto, result ) => {
     const sql = `
     SELECT productos.id_producto, nombre_producto, referencia_producto, nombre_categoria, cantidad_producto_almacen AS cantidad_disponible
@@ -152,7 +180,9 @@ Producto.delete = ( producto, result ) => {
 
 Producto.getDetails = ( producto, result ) => {
     const sql = `
-    SELECT nombre_producto, 
+    SELECT
+        productos.id_producto, 
+        nombre_producto, 
         referencia_producto, 
         nombre_categoria, 
         nombre_almacen AS 'Ubicacion', 
@@ -188,32 +218,54 @@ Producto.getDetails = ( producto, result ) => {
 
 Producto.updateDetails = ( producto, result ) => {
     const sql = `
-    UPDATE Productos
-    SET nombre_producto = ?,
-        stock_minimo = ?,
-        precio_venta = ?,
-        imagen = ?,
-        id_categoria = ?
-    WHERE id_producto = ?
+    SELECT COUNT(*) AS datos_existentes FROM almacenes_productos
+    WHERE referencia_producto = ? 
     `;
     db.query(
         sql,
         [
-            producto.nombre_producto,
-            producto.stock_minimo,
-            producto.precio_venta,
-            producto.imagen,
-            producto.id_categoria,
-            producto.id_producto
+            producto.referencia_producto,
         ],
-        ( err, res ) => {
+        ( err, res ) => { 
             if( err ) {
                 console.log( 'error: ', err );
                 result( err, null );
             }
             else{
-                console.log( 'Id del producto actualizado: ', res );
-                result( null, res, { message: 'Producto actualizado' } );
+                console.log( 'Datos existentes: ', res[0] );
+                if( res[0].datos_existentes > 0 ) {
+                    result(null, { message: 'El producto ya existe' });
+                }else{
+                    const sql = `
+                    UPDATE Productos
+                    SET nombre_producto = ?,
+                        stock_minimo = ?,
+                        precio_venta = ?,
+                        imagen = ?,
+                        id_categoria = ?
+                    WHERE id_producto = ?
+                    `;
+                    sql, 
+                    [
+                        producto.nombre_producto,
+                        producto.stock_minimo,
+                        producto.precio_venta,
+                        producto.imagen,
+                        producto.id_categoria,
+                        producto.id_producto
+                    ],
+                    (err, res) => {
+                        if( err ) {
+                            console.log( 'error: ', err );
+                            result( err, null );
+                        }
+                        else{
+                            console.log( 'Id del producto actualizado: ', res );
+                            result( null, res, { message: 'Producto actualizado' } );
+                        }
+                    
+                    }
+                }
             }
         }
     )
