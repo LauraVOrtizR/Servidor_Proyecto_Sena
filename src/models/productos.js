@@ -106,7 +106,8 @@ Producto.getAllProductByStore = (producto, result ) => {
 
 Producto.getAllProduct = (result) => {
     const sql = `
-    SELECT * FROM productos
+    SELECT productos.*, almacenes_productos.referencia_producto FROM productos
+    JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
     `; //Consulta para leer todos los productos
     db.query(
         sql,
