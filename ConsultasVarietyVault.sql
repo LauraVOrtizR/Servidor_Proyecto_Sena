@@ -34,8 +34,8 @@ CREATE TABLE Usuarios (
 
 CREATE TABLE Almacenes(
     id_almacen INT AUTO_INCREMENT PRIMARY KEY, -- PK
-    nombre_almacen VARCHAR(20) NOT NULL,
-    direccion_almacen VARCHAR(30) NOT NULL,
+    nombre_almacen VARCHAR(100) NOT NULL,
+    direccion_almacen VARCHAR(100) NOT NULL,
     descripcion_almacen VARCHAR(100) NOT NULL,
     estado_almacen BOOLEAN DEFAULT 1 NOT NULL
 );
@@ -65,6 +65,7 @@ CREATE TABLE Salidas(
 CREATE TABLE Productos(
     id_producto INT AUTO_INCREMENT PRIMARY KEY, -- PK
     nombre_producto VARCHAR(100) NOT NULL,    
+    referencia_producto VARCHAR (10) NOT NULL,
     stock_minimo INT NOT NULL,
     promedio_costo INT NOT NULL,
     precio_venta INT NOT NULL,
@@ -107,8 +108,6 @@ CREATE TABLE Productos_Salidas(
 CREATE TABLE Almacenes_Productos(
     id_almacen INT NOT NULL,
     id_producto INT NOT NULL,
-    referencia_producto VARCHAR (10) NOT NULL,
-    estado_producto_almacen BOOLEAN DEFAULT 1 NOT NULL,
     cantidad_producto_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
@@ -155,14 +154,14 @@ CREATE TABLE Almacenes_Productos(
         ('Ver Perfiles'),
         ('Crear Perfiles'),
         ('Editar Perfiles'),
-        ('Eliminar Perfiles')
+        ('Eliminar Perfiles');
 
 -- Insertar 3 roles
     INSERT INTO Roles (nombre_rol)
     VALUES
         ('Administrador'),
         ('Analista'),
-        ('Almacenista')
+        ('Almacenista');
 
 -- Insertar x roles_permisos
     INSERT INTO Roles_Permisos (id_rol, id_permiso)
@@ -209,7 +208,7 @@ CREATE TABLE Almacenes_Productos(
         (3, 12),
         (3, 13),
         (3, 15),
-        (3, 19)
+        (3, 19);
 
 -- Insertar 4 categoría
     INSERT INTO Categorias (nombre_categoria)
@@ -220,38 +219,38 @@ CREATE TABLE Almacenes_Productos(
         ('Comida');
 
 -- Insertar 30 productos
-    INSERT INTO productos (nombre_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria)
+    INSERT INTO productos (nombre_producto, referencia_producto, stock_minimo, promedio_costo, precio_venta, imagen, id_categoria)
     VALUES
-        ('Jabón en polvo', 10, 21000, 35000, 'image1.jpg', 1),
-        ('Smartphone', 15, 28000, 45500, 'image2.jpg', 2),
-        ('Televisor LED', 20, 35000, 52500, 'image3.jpg', 2),
-        ('Laptop', 5, 14000, 28000, 'image4.jpg', 2),
-        ('Leche en polvo', 12, 24500, 42000, 'image5.jpg', 4),
-        ('Zapatos deportivos', 8, 17500, 31500, 'image6.jpg', 3),
-        ('Camisa de vestir', 18, 31500, 49000, 'image7.jpg', 3),
-        ('Detergente líquido', 25, 38500, 59500, 'image8.jpg', 1),
-        ('Cereal de desayuno', 3, 10450, 24450, 'image9.jpg', 4),
-        ('Gorra de moda', 7, 17500, 31500, 'image10.jpg', 3),
-        ('Toalla de baño', 10, 21000, 35000, 'image11.jpg', 3),
-        ('Reloj de pulsera', 15, 28000, 45500, 'image12.jpg', 3),
-        ('Cámara digital', 20, 35000, 52500, 'image13.jpg', 2),
-        ('Auriculares inalámbricos', 5, 14000, 28000, 'image14.jpg', 2),
-        ('Botella de agua', 12, 24500, 42000, 'image15.jpg', 4),
-        ('Pantalones casuales', 8, 17500, 31500, 'image16.jpg', 3),
-        ('Xbox', 18, 31500, 49000, 'image17.jpg', 2),
-        ('Desinfectante', 25, 38500, 59500, 'image18.jpg', 1),
-        ('Decodificador', 3, 10450, 24450, 'image19.jpg', 2),
-        ('Salchichas', 7, 17500, 31500, 'image20.jpg', 4),
-        ('Suavitel', 10, 21000, 35000, 'image21.jpg', 1),
-        ('Clorox', 15, 28000, 45500, 'image22.jpg', 1),
-        ('Cafe', 20, 35000, 52500, 'image23.jpg', 4),
-        ('Smartwatch', 5, 14000, 28000, 'image24.jpg', 2),
-        ('Ropa interior', 12, 24500, 42000, 'image25.jpg', 3),
-        ('Fabuloso', 8, 17500, 31500, 'image26.jpg', 1),
-        ('Juego de sábanas', 18, 31500, 49000, 'image27.jpg', 3),
-        ('Pan', 25, 38500, 59500, 'image28.jpg', 4),
-        ('Cartera', 3, 10450, 24450, 'image29.jpg', 3),
-        ('Limpia vidrios', 7, 17500, 31500, 'image30.jpg', 1);
+        ('Jabón en polvo','REF001', 10, 21000, 35000, 'image1.jpg', 1),
+        ('Smartphone','REF002', 15, 28000, 45500, 'image2.jpg', 2),
+        ('Televisor LED','REF003', 20, 35000, 52500, 'image3.jpg', 2),
+        ('Laptop','REF004', 5, 14000, 28000, 'image4.jpg', 2),
+        ('Leche en polvo','REF005', 12, 24500, 42000, 'image5.jpg', 4),
+        ('Zapatos deportivos','REF006', 8, 17500, 31500, 'image6.jpg', 3),
+        ('Camisa de vestir','REF007', 18, 31500, 49000, 'image7.jpg', 3),
+        ('Detergente líquido','REF008', 25, 38500, 59500, 'image8.jpg', 1),
+        ('Cereal de desayuno','REF009', 3, 10450, 24450, 'image9.jpg', 4),
+        ('Gorra de moda','REF010', 7, 17500, 31500, 'image10.jpg', 3),
+        ('Toalla de baño','REF011', 10, 21000, 35000, 'image11.jpg', 3),
+        ('Reloj de pulsera','REF012', 15, 28000, 45500, 'image12.jpg', 3),
+        ('Cámara digital','REF013', 20, 35000, 52500, 'image13.jpg', 2),
+        ('Auriculares inalámbricos','REF014', 5, 14000, 28000, 'image14.jpg', 2),
+        ('Botella de agua','REF015', 12, 24500, 42000, 'image15.jpg', 4),
+        ('Pantalones casuales','REF016', 8, 17500, 31500, 'image16.jpg', 3),
+        ('Xbox','REF017', 18, 31500, 49000, 'image17.jpg', 2),
+        ('Desinfectante','REF018', 25, 38500, 59500, 'image18.jpg', 1),
+        ('Decodificador','REF019', 3, 10450, 24450, 'image19.jpg', 2),
+        ('Salchichas','REF020', 7, 17500, 31500, 'image20.jpg', 4),
+        ('Suavitel','REF021', 10, 21000, 35000, 'image21.jpg', 1),
+        ('Clorox','REF022', 15, 28000, 45500, 'image22.jpg', 1),
+        ('Cafe','REF023', 20, 35000, 52500, 'image23.jpg', 4),
+        ('Smartwatch','REF024', 5, 14000, 28000, 'image24.jpg', 2),
+        ('Ropa interior','REF025', 12, 24500, 42000, 'image25.jpg', 3),
+        ('Fabuloso','REF026', 8, 17500, 31500, 'image26.jpg', 1),
+        ('Juego de sábanas','REF027', 18, 31500, 49000, 'image27.jpg', 3),
+        ('Pan','REF028', 25, 38500, 59500, 'image28.jpg', 4),
+        ('Cartera','REF029', 3, 10450, 24450, 'image29.jpg', 3),
+        ('Limpia vidrios','REF030', 7, 17500, 31500, 'image30.jpg', 1);
 
 -- Insertar 6 usuarios
     INSERT INTO Usuarios (nombre_usuario, id_rol, id_tipo_documento, numero_documento, correo_electronico, contraseña)
@@ -417,38 +416,38 @@ CREATE TABLE Almacenes_Productos(
         (30, 30, 3);
 
 -- Insertar 30 almacenes_productos
-    INSERT INTO Almacenes_Productos (id_almacen, id_producto, referencia_producto, cantidad_producto_almacen)
+    INSERT INTO Almacenes_Productos (id_almacen, id_producto,cantidad_producto_almacen)
     VALUES
-        (1, 1, 'REF001', 10),
-        (2, 2, 'REF002', 15),
-        (3, 3, 'REF003', 20),
-        (1, 4, 'REF004', 5),
-        (2, 5, 'REF005', 12),
-        (3, 6, 'REF006', 8),
-        (1, 7, 'REF007', 18),
-        (2, 8, 'REF008', 25),
-        (3, 9, 'REF009', 3),
-        (1, 10, 'REF010', 7),
-        (2, 11, 'REF011', 10),
-        (3, 12, 'REF012', 15),
-        (1, 13, 'REF013', 20),
-        (2, 14, 'REF014', 5),
-        (3, 15, 'REF015', 12),
-        (1, 16, 'REF016', 8),
-        (2, 17, 'REF017', 18),
-        (3, 18, 'REF018', 25),
-        (1, 19, 'REF019', 3),
-        (2, 20, 'REF020', 7),
-        (3, 21, 'REF021', 10),
-        (1, 22, 'REF022', 15),
-        (2, 23, 'REF023', 20),
-        (3, 24, 'REF024', 5),
-        (1, 25, 'REF025', 12),
-        (2, 26, 'REF026', 8),
-        (3, 27, 'REF027', 18),
-        (1, 28, 'REF028', 25),
-        (2, 29, 'REF029', 3),
-        (3, 30, 'REF030', 7);
+        (1, 1, 10),
+        (2, 2, 15),
+        (3, 3, 20),
+        (1, 4, 5),
+        (2, 5, 12),
+        (3, 6, 8),
+        (1, 7, 18),
+        (2, 8, 25),
+        (3, 9, 3),
+        (1, 10, 7),
+        (2, 11, 10),
+        (3, 12, 15),
+        (1, 13, 20),
+        (2, 14, 5),
+        (3, 15, 12),
+        (1, 16, 8),
+        (2, 17, 18),
+        (3, 18, 25),
+        (1, 19, 3),
+        (2, 20, 7),
+        (3, 21, 10),
+        (1, 22, 15),
+        (2, 23, 20),
+        (3, 24, 5),
+        (1, 25, 12),
+        (2, 26, 8),
+        (3, 27, 18),
+        (1, 28, 25),
+        (2, 29, 3),
+        (3, 30, 7);
 
 
 -- ______________________________________________________________________________________________________________________
