@@ -216,7 +216,7 @@ Producto.getDetails = ( producto, result ) => {
 Producto.updateDetails = ( producto, result ) => {
     const sql = `
     SELECT COUNT(*) AS datos_existentes FROM productos
-    WHERE referencia_producto = ? AND id_producto = ?
+    WHERE referencia_producto = ? AND id_producto != ?
     `;
     db.query(
         sql,
@@ -225,7 +225,6 @@ Producto.updateDetails = ( producto, result ) => {
             producto.id_producto,
         ],
         ( err, res ) => { 
-            console.log( 'Mensaje de prueba' );
             if( err ) {
                 console.log( 'error: ', err );
                 result( err, null );
@@ -233,9 +232,9 @@ Producto.updateDetails = ( producto, result ) => {
             else{
                 console.log( 'Datos existentes: ', res[0] );
                 if( res[0].datos_existentes > 0 ) {
-                    result(null, { message: 'El producto ya existe' });
+                    result(null, { message: 'La referencia ya existe' })
                 }else{
-                    console.log("Ingrese 2 consulta", producto);
+                    console.log("Ingrese 2 consulta");
                     const sql = `
                     UPDATE productos
                     SET 
@@ -247,27 +246,28 @@ Producto.updateDetails = ( producto, result ) => {
                         id_categoria = ?
                     WHERE id_producto = ?
                     `;
-                    sql, 
-                    [
-                        producto.referencia_producto,
-                        producto.nombre_producto,
-                        producto.stock_minimo,
-                        producto.precio_venta,
-                        producto.imagen,
-                        producto.id_categoria,
-                        producto.id_producto
-                    ],
-                    (err, res) => {
-                        if( err ) {
-                            console.log( 'error: ', err );
-                            result( err, null );
+                    db.query(
+                        sql, 
+                        [
+                            producto.referencia_producto,
+                            producto.nombre_producto,
+                            producto.stock_minimo,
+                            producto.precio_venta,
+                            producto.imagen,
+                            producto.id_categoria,
+                            producto.id_producto
+                        ],
+                        (err, res) => {
+                            if( err ) {
+                                console.log( 'error: ', err );
+                                result( err, null );
+                            }
+                            else{
+                                console.log( 'Id del producto actualizado: ', res );
+                                result( null, res, { message: 'Producto actualizado' } );
+                            }
                         }
-                        else{
-                            console.log( 'Id del producto actualizado: ', res );
-                            result( null, res, { message: 'Producto actualizado' } );
-                        }
-                    
-                    }
+                    )
                 }
             }
         }
