@@ -3,9 +3,8 @@ const Categoria = {};
 
 Categoria.create = (category, result) => {
     const sql = `
-        SELECT COUNT(*) AS datos_existentes FROM almacenes_categorias
-        JOIN categorias ON almacenes_categorias.id_categoria = categorias.id_categoria
-        WHERE nombre_categoria = ? AND id_almacen = ?;
+        SELECT * FROM categorias
+        WHERE nombre_categoria = ? 
     `; // Consulta para verificar si ya existe la categoria en el almacen
     db.query(
         sql,
@@ -17,19 +16,18 @@ Categoria.create = (category, result) => {
                 console.log('error: ', err);
                 result(err, null);
             }
-            else{
-                console.log('Datos existentes: ', res[0]);
-                if(res[0].datos_existentes > 0) {
-                    result(null, {message: 'La categoria ya existe'});
-                }
-                else{
+            else if(res[0] != null){
+                console.log('Almacen ', res[0]);
+                if(res[0].estado_categoria == 0) {
                     const sql = `
-                    INSERT INTO categorias(nombre_categoria) VALUES (?)
-                    `; // Consulta para insertar una categoria
+                    UPDATE categorias
+                        SET estado_categoria = 1
+                        WHERE id_categoria = ?
+                    `; // Consulta para actualizar la categoria
                     db.query(
                         sql,
                         [
-                            category.nombre_categoria
+                            res[0].id_categoria
                         ],
                         (err, res) => {
                             if(err) {
@@ -37,32 +35,36 @@ Categoria.create = (category, result) => {
                                 result(err, null);
                             }
                             else{
-                                let id_categoria = res.insertId;
-                                const sql = `
-                                INSERT INTO almacenes_categorias(id_almacen, id_categoria)
-                                VALUES(?,?)
-                                `; // Consulta para insertar la categoria en el almacen
-                                db.query(
-                                    sql,
-                                    [
-                                        category.id_almacen,
-                                        id_categoria
-                                    ],
-                                    (err, res) => {
-                                        if(err) {
-                                            console.log('error: ', err);
-                                            result(err, null);
-                                        }
-                                        else{
-                                            result(null, {id_categoria, message: 'Categoria creada'});
-                                            console.log('Id de la nueva categoria: ', res.insertId);
-                                        }
-                                    }
-                                )
+                                console.log('Categoria Crear: ', res);
+                                result(null, res, {message: 'Categoria Creada'});
                             }
                         }
                     )
                 }
+                else if(res[0].estado_categoria == 1) {
+                    result(null, {message: 'La categoria ya existe'});
+                }
+            }
+            else if(res[0] == null){
+                const sql = `
+                INSERT INTO categorias(nombre_categoria) VALUES (?)
+                `; // Consulta para insertar una categoria
+                db.query(
+                    sql,
+                    [
+                        category.nombre_categoria
+                    ],
+                    (err, res) => {
+                        if(err) {
+                            console.log('error: ', err);
+                            result(err, null);
+                        }
+                        else{
+                            console.log('Id de la categoria: ', res.insertId);
+                            result(null, res.insertId, {message: 'Categoria creada'});
+                        }
+                    }
+                )
             }
         }
     )
@@ -89,15 +91,12 @@ Categoria.getCategoria = (result) => {
 
 Categoria.deleteCategoria = (category, result) => {
     const sql = `
-    UPDATE almacenes_categorias
-        SET estado_categoria_almacen = 0
-        WHERE id_categoria = ? and id_almacen = 1
-    `;
+    SELECT COUNT(id_categoria) AS cantidad_categoria FROM productos WHERE id_categoria = ?
+    `; // Consulta para verificar si la categoria tiene productos
     db.query(
         sql,
         [
-            category.id_categoria,
-            category.id_almacen
+            category.id_categoria
         ],
         (err, res) => {
             if(err) {
@@ -105,8 +104,34 @@ Categoria.deleteCategoria = (category, result) => {
                 result(err, null);
             }
             else{
-                console.log('Categoria eliminada: ', res);
-                result(null, {res, message: 'Categoria eliminada'});
+                console.log('Cantidad de categoria: ', res[0].cantidad_categoria);
+                if(res[0].cantidad_categoria > 0) {
+                    result(null, {message: 'No se puede actualizar la categoria porque tiene productos asociados'});
+                }
+                else{
+                    const sql = `
+                    UPDATE categorias
+                        SET estado_categoria = 0
+                        WHERE id_categoria = ?
+                    `; // Consulta para eliminar la categoria
+                    db.query(
+                        sql,
+                        [
+                            category.id_categoria,
+                            category.id_almacen
+                        ],
+                        (err, res) => {
+                            if(err) {
+                                console.log('error: ', err);
+                                result(err, null);
+                            }
+                            else{
+                                console.log('Categoria eliminada: ', res);
+                                result(null, {res, message: 'Categoria eliminada'});
+                            }
+                        }
+                    )
+                }
             }
         }
     )

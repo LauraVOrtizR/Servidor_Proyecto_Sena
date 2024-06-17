@@ -85,21 +85,46 @@ Almacen.getByUser = (store, result) => {
 }
 
 Almacen.deleteAlmacen = (store, result) => {
-    const sql = `UPDATE almacenes SET estado_almacen = 0 WHERE id_almacen = ?`
-        ;
+    const sql = `
+    SELECT SUM(cantidad_producto_almacen) AS cantidad_existente FROM almacenes_productos WHERE id_almacen=?
+    `;
     db.query(
         sql,
         [
             store.id_almacen
         ],
         (err, res) => {
-            if (err) {
+            if(err){
                 console.log('error: ', err);
                 result(err, null);
             }
-            else {
-                console.log('Almacen actualizado: ', res);
-                result(null, res, { message: 'Almacen actualizado' });
+            else{
+                console.log('prueba', res[0]);
+                if(res[0].cantidad_existente == null || res[0].cantidad_existente == 0){
+                    const sql = `
+                    UPDATE almacenes SET estado_almacen = 0 WHERE id_almacen = ?
+                    `;
+                    db.query(
+                        sql,
+                        [
+                            store.id_almacen
+                        ],
+                        (err, res) => {
+                            if (err) {
+                                console.log('error: ', err);
+                                result(err, null);
+                            }
+                            else {
+                                console.log('Almacen actualizado: ', res);
+                                result(null, res, { message: 'Almacen actualizado' });
+                            }
+                        }
+                    );
+                }
+                else{
+                    console.log(res[0].cantidad_existente)
+                    result(null, {message: 'No se puede eliminar el almacen, tiene productos asignados'});
+                }
             }
         }
     )
