@@ -321,7 +321,7 @@ Producto.getProvision = ( result ) => {
        cantidad_producto_almacen
     FROM productos
     JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
-    WHERE cantidad_producto_almacen <= stock_minimo;
+    WHERE cantidad_producto_almacen <= stock_minimo AND id_almacen = ?;
     `; // Consulta para leer los productos que necesitan abastecimiento
     db.query(
         sql,

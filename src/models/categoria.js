@@ -71,7 +71,7 @@ Categoria.create = (category, result) => {
 };
 
 Categoria.getCategoria = (result) => {
-    const sql = 'SELECT id_categoria, nombre_categoria FROM categorias'
+    const sql = 'SELECT id_categoria, nombre_categoria FROM categorias WHERE estado_categoria = 1'
     ;
     db.query(
         sql,
