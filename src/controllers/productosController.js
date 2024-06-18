@@ -192,7 +192,15 @@ module.exports = {
     },
 
     getProvisionProduct ( req, res ) {
-        Producto.getProvision(( err, data ) => {
+        const id_almacen = req.query || null; // Id del almacen
+
+        if(!id_almacen) {
+            return res.status(400).json({
+                success: false,
+                message: 'Falta la fecha de la operación'
+            });
+        }
+        Producto.getProvision(id_almacen,( err, data ) => {
             if( err ) {
                 res.status( 501 ).json({
                     success: false,

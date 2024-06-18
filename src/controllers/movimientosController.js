@@ -1,7 +1,7 @@
 const Movimiento = require('../models/movimiento');
 module.exports = {
     
-    getEntradasSalidas(req, res) {
+    getOperations(req, res) {
         const fecha_inicio = req.query.fecha_inicio || null;
         const fecha_fin = req.query.fecha_fin || null;
         
@@ -15,7 +15,7 @@ module.exports = {
             fecha_inicio: fecha_inicio,
             fecha_fin: fecha_fin
         };
-        Movimiento.getEntradasSalidas(operation, (err, data) => {
+        Movimiento.getOperations(operation, (err, data) => {
             if(err) {
                 return res.status(501).json({
                     success: false,

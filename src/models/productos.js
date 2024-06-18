@@ -313,19 +313,23 @@ Producto.getTransactions = ( producto, result ) => {
     )
 }
 
-Producto.getProvision = ( result ) => {
+Producto.getProvision = (producto, result ) => {
     const sql = `
     SELECT nombre_producto,
        referencia_producto,
        stock_minimo,
-       cantidad_producto_almacen
+       cantidad_producto_almacen,
+       nombre_categoria
     FROM productos
     JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
+    JOIN categorias ON productos.id_categoria = categorias.id_categoria
     WHERE cantidad_producto_almacen <= stock_minimo AND id_almacen = ?;
     `; // Consulta para leer los productos que necesitan abastecimiento
     db.query(
         sql,
-        [],
+        [
+            producto.id_almacen
+        ],
         ( err, res ) => {
             if( err ) {
                 console.log( 'error: ', err );
