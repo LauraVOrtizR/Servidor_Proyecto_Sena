@@ -48,7 +48,7 @@ CREATE TABLE Categorias(
 
 CREATE TABLE Entradas(    
     id_entrada INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_hora DATE NOT NULL,
+    fecha DATE NOT NULL,
     origen_entrada VARCHAR(20) NOT NULL,
     id_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen)

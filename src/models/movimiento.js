@@ -3,20 +3,20 @@ const Movimiento = {};
 
 Movimiento.getOperations = (operation, result) => {
     const sql =
-    `SELECT CONCAT('ENT', entradas.id_entrada) AS referencia, fecha_hora, nombre_producto, nombre_almacen 
+    `SELECT CONCAT('ENT', entradas.id_entrada) AS referencia, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, nombre_producto, nombre_almacen 
     AS 'origen_destino', CONCAT('+',cantidad_entrada) AS cantidad
     FROM entradas 
     JOIN Productos_entradas ON entradas.id_entrada = Productos_entradas.id_entrada 
     JOIN Productos ON Productos_entradas.id_producto = Productos.id_producto
     JOIN almacenes ON almacenes.id_almacen = entradas.id_almacen
-    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = ?
+    WHERE (fecha >= ? AND fecha < ?) AND almacenes.id_almacen = ?
     UNION
-    SELECT CONCAT('SAL', salidas.id_salida) AS referencia, fecha_hora, nombre_producto, destino_salida AS 'origen_destino', CONCAT('-',cantidad_salida) AS cantidad 
+    SELECT CONCAT('SAL', salidas.id_salida) AS referencia, DATE_FORMAT(fecha, '%Y-%m-%d'), nombre_producto, destino_salida AS 'origen_destino', CONCAT('-',cantidad_salida) AS cantidad 
     FROM salidas 
     JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida 
     JOIN Productos ON productos_salidas.id_producto = Productos.id_producto 
     JOIN almacenes ON almacenes.id_almacen = salidas.id_almacen
-    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = ?
+    WHERE (fecha >= ? AND fecha < ?) AND almacenes.id_almacen = ?
     `
     ;
     db.query(

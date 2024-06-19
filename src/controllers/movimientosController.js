@@ -27,14 +27,14 @@ module.exports = {
                 });
             }
             if(data.length === 0) {
-                return res.status(404).json({
-                    success: false,
+                return res.status(200).json({
+                    success: true,
                     message: 'No se encontraron movimientos'
                 });
             }
             return res.status(200).json({
                 success: true,
-                message: 'Movimientos obtenidos',
+                message: res.message,
                 data: data //Datos del movimiento
             });
         });
