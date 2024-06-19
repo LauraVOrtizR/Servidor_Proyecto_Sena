@@ -4,8 +4,9 @@ module.exports = {
     getOperations(req, res) {
         const fecha_inicio = req.query.fecha_inicio || null;
         const fecha_fin = req.query.fecha_fin || null;
+        const id_almacen = req.query.id_almacen || null;
         
-        if(!fecha_inicio || !fecha_fin) {
+        if(!fecha_inicio || !fecha_fin || !id_almacen) {
             return res.status(400).json({
                 success: false,
                 message: 'Falta la fecha de la operación'
@@ -13,7 +14,9 @@ module.exports = {
         }
         const operation = {
             fecha_inicio: fecha_inicio,
-            fecha_fin: fecha_fin
+            fecha_fin: fecha_fin,
+            id_almacen: id_almacen
+
         };
         Movimiento.getOperations(operation, (err, data) => {
             if(err) {

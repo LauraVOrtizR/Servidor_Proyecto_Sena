@@ -316,10 +316,10 @@ Producto.getTransactions = ( producto, result ) => {
 Producto.getProvision = (producto, result ) => {
     const sql = `
     SELECT nombre_producto,
-       referencia_producto,
-       stock_minimo,
-       cantidad_producto_almacen,
-       nombre_categoria
+        referencia_producto,
+        stock_minimo,
+        cantidad_producto_almacen,
+        nombre_categoria
     FROM productos
     JOIN almacenes_productos ON productos.id_producto = almacenes_productos.id_producto
     JOIN categorias ON productos.id_categoria = categorias.id_categoria

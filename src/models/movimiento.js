@@ -4,19 +4,19 @@ const Movimiento = {};
 Movimiento.getOperations = (operation, result) => {
     const sql =
     `SELECT CONCAT('ENT', entradas.id_entrada) AS referencia, fecha_hora, nombre_producto, nombre_almacen 
-    AS 'origen/destino', CONCAT('+',cantidad_entrada) AS cantidad
+    AS 'origen_destino', CONCAT('+',cantidad_entrada) AS cantidad
     FROM entradas 
     JOIN Productos_entradas ON entradas.id_entrada = Productos_entradas.id_entrada 
     JOIN Productos ON Productos_entradas.id_producto = Productos.id_producto
     JOIN almacenes ON almacenes.id_almacen = entradas.id_almacen
-    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = 2
+    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = ?
     UNION
-    SELECT CONCAT('SAL', salidas.id_salida) AS referencia, fecha_hora, nombre_producto, destino_salida AS 'origen/destino', CONCAT('-',cantidad_salida) AS cantidad 
+    SELECT CONCAT('SAL', salidas.id_salida) AS referencia, fecha_hora, nombre_producto, destino_salida AS 'origen_destino', CONCAT('-',cantidad_salida) AS cantidad 
     FROM salidas 
     JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida 
     JOIN Productos ON productos_salidas.id_producto = Productos.id_producto 
     JOIN almacenes ON almacenes.id_almacen = salidas.id_almacen
-    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = 2
+    WHERE (fecha_hora >= ? AND fecha_hora < ?) AND almacenes.id_almacen = ?
     `
     ;
     db.query(
@@ -24,8 +24,10 @@ Movimiento.getOperations = (operation, result) => {
         [
             operation.fecha_inicio,
             operation.fecha_fin,
+            operation.id_almacen,
             operation.fecha_inicio,
-            operation.fecha_fin
+            operation.fecha_fin,
+            operation.id_almacen
         ],
         (err, res) => {
             if(err) {
