@@ -44,13 +44,19 @@ Movimiento.getOperations = (operation, result) => {
 };
 
 Movimiento.createEntrada = (operation, result) => {
-    const sql = `INSERT INTO entradas(fecha, origen_entrada, id_almacen) VALUES (?,?,?)`;
+
+    const values = operation.map(item =>[item.origen_entrada, item.id_almacen, item.id_producto, item.cantidad_entrada, item.precio_compra]);
+
+    console.log('Values: ', values);
+
+    /*
+    Para cada elemento de values,se ejecute las consultas 
+    */
+    const sql = `INSERT INTO entradas(fecha, origen_entrada, id_almacen) VALUES (?, ?, ?)`;
     db.query(
         sql,
         [
             new Date(),
-            operation.origen_entrada,
-            operation.id_almacen,
         ],
         (err, res) => {
             if(err) {
@@ -64,7 +70,7 @@ Movimiento.createEntrada = (operation, result) => {
                     sql,
                     [
                         operation.id_producto,
-                        operation.id_entrada,
+                        id_entrada,
                         operation.cantidad_entrada,
                         operation.precio_compra
                     ],
