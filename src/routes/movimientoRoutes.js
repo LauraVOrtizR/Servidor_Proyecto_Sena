@@ -3,7 +3,7 @@ const router = Router();
 const movimientosController = require('../controllers/movimientosController');
 
 router.get('/entradas_salidas', movimientosController.getOperations);
-router.post('/entradas', movimientosController.createEntrada);
-router.post('/salidas', movimientosController.createSalida);
+router.post('/entradas', movimientosController.createEntry);
+router.post('/salidas', movimientosController.createExit);
 
 module.exports = router;

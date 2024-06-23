@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Root1234',
+    password: 'BlackPinkOT4_',
     database: 'varietyvault'
 });
 

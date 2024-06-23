@@ -26,7 +26,8 @@ CREATE TABLE Usuarios (
     id_tipo_documento INT NOT NULL,
     numero_documento INT NOT NULL UNIQUE,
     correo_electronico VARCHAR(50) NOT NULL UNIQUE,
-    contraseña VARCHAR(10) NOT NULL,
+    contraseña VARCHAR(30) NOT NULL,
+    id_jefe INT,
     estado_usuario BOOLEAN DEFAULT 1 NOT NULL,    
     FOREIGN KEY (id_rol) REFERENCES Roles(id_rol),
     FOREIGN KEY (id_tipo_documento) REFERENCES tipos_documentos(id_tipo_documento)
@@ -56,7 +57,7 @@ CREATE TABLE Entradas(
 
 CREATE TABLE Salidas(
     id_salida INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_hora DATE NOT NULL,
+    fecha DATE NOT NULL,
     destino_salida VARCHAR(20) NOT NULL,
     id_almacen INT NOT NULL,
     FOREIGN KEY (id_almacen) REFERENCES Almacenes(id_almacen)

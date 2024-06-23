@@ -43,20 +43,17 @@ Movimiento.getOperations = (operation, result) => {
     )
 };
 
-Movimiento.createEntrada = (operation, result) => {
+Movimiento.createEntry = (operation, result) => {
+    
+    let lista_entradas = operation.productos_entradas.map(item =>[item.id_producto, item.cantidad_entrada, item.precio_compra]);
 
-    const values = operation.map(item =>[item.origen_entrada, item.id_almacen, item.id_producto, item.cantidad_entrada, item.precio_compra]);
-
-    console.log('Values: ', values);
-
-    /*
-    Para cada elemento de values,se ejecute las consultas 
-    */
     const sql = `INSERT INTO entradas(fecha, origen_entrada, id_almacen) VALUES (?, ?, ?)`;
     db.query(
         sql,
         [
             new Date(),
+            operation.origen_entrada,
+            operation.id_almacen
         ],
         (err, res) => {
             if(err) {
@@ -65,14 +62,13 @@ Movimiento.createEntrada = (operation, result) => {
             }
             else{
                 const id_entrada = res.insertId;
-                const sql = `INSERT INTO productos_entradas(id_producto, id_entrada, cantidad_entrada, precio_compra) VALUES (?,?,?,?)`;
+                lista_entradas = lista_entradas.map(sublist => [id_entrada, ...sublist]);
+
+                const sql = `INSERT INTO productos_entradas(id_entrada, id_producto, cantidad_entrada, precio_compra) VALUES ?`;
                 db.query(
                     sql,
                     [
-                        operation.id_producto,
-                        id_entrada,
-                        operation.cantidad_entrada,
-                        operation.precio_compra
+                        lista_entradas
                     ],
                     (err, res) => {
                         if(err) {
@@ -87,18 +83,22 @@ Movimiento.createEntrada = (operation, result) => {
                             result(err, null);
                         }
                         else{
-                            const sql = 
-                            `UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen + ? 
-                            WHERE id_producto = ? AND id_almacen = ?`
-                            ;
-                            db.query(
-                                sql,
-                                [
-                                    operation.cantidad_entrada,
-                                    operation.id_producto,
-                                    operation.id_almacen
-                                ],
-                            )
+                            let lista_almacen_producto = lista_entradas.map(sublist => [sublist[2], sublist[1], operation.id_almacen]);
+
+                            lista_almacen_producto.forEach(values => {
+                                const sql = 
+                                `UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen + ? 
+                                WHERE id_producto = ? AND id_almacen = ?`
+                                ;
+                                db.query(
+                                    sql,
+                                    [
+                                        values[0],
+                                        values[1],
+                                        values[2]
+                                    ],
+                                )
+                            })
                             console.log('Id de la nueva entrada: ', id_entrada);
                             result(null, id_entrada, {message: 'Entrada creada'});
                         }
@@ -109,7 +109,11 @@ Movimiento.createEntrada = (operation, result) => {
     )
 };
 
-Movimiento.createSalida = (operation, result) => {
+Movimiento.createExit = (operation, result) => {
+
+    let lista_salidas = operation.productos_salidas.map(item =>[item.id_producto, item.cantidad_salida]);
+    console.log('Lista de salidas: ', lista_salidas);
+
     const sql = `INSERT INTO salidas(fecha, destino_salida, id_almacen) VALUES (?,?,?)`;
     db.query(
         sql,
@@ -125,13 +129,14 @@ Movimiento.createSalida = (operation, result) => {
             }
             else{
                 const id_salida = res.insertId;
-                const sql = `INSERT INTO productos_salidas(id_producto, id_salida, cantidad_salida) VALUES (?,?,?)`;
+                lista_salidas = lista_salidas.map(sublist => [id_salida, ...sublist]);
+                console.log('Lista de salidas con id de salida: ', lista_salidas);
+
+                const sql = `INSERT INTO productos_salidas(id_salida, id_producto, cantidad_salida) VALUES ?`;
                 db.query(
                     sql,
                     [
-                        operation.id_producto,
-                        operation.id_salida,
-                        operation.cantidad_salida,
+                        lista_salidas
                     ],
                     (err, res) => {
                         if(err) {
@@ -146,18 +151,23 @@ Movimiento.createSalida = (operation, result) => {
                             result(err, null);
                         }
                         else{
-                            const sql = 
-                            `UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen - ? 
-                            WHERE id_producto = ? AND id_almacen = ?`
-                            ;
-                            db.query(
-                                sql,
-                                [
-                                    operation.cantidad_salida,
-                                    operation.id_producto,
-                                    operation.id_almacen
-                                ],
-                            )
+                            let lista_almacen_producto = lista_salidas.map(sublist => [sublist[2], sublist[1], operation.id_almacen]);
+                            console.log('Lista de almacenes y productos: ', lista_almacen_producto);
+
+                            lista_almacen_producto.forEach(values => {
+                                const sql = 
+                                `UPDATE almacenes_productos SET cantidad_producto_almacen = cantidad_producto_almacen - ? 
+                                WHERE id_producto = ? AND id_almacen = ?`
+                                ;
+                                db.query(
+                                    sql,
+                                    [
+                                        values[0],
+                                        values[1],
+                                        values[2]
+                                    ],
+                                )
+                            });
                             console.log('Id de la nueva salida: ', id_salida);
                             result(null, id_salida, {message: 'Salida creada'});
                         }

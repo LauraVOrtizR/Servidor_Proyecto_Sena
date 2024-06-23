@@ -40,9 +40,9 @@ module.exports = {
         });
     },
 
-    createEntrada(req, res) {
+    createEntry(req, res) {
         const operation = req.body;
-        Movimiento.createEntrada(operation, (err, data) => {
+        Movimiento.createEntry(operation, (err, data) => {
             if(err) {
                 return res.status(501).json({
                     success: false,
@@ -58,9 +58,9 @@ module.exports = {
         });
     },
 
-    createSalida(req, res) {
+    createExit(req, res) {
         const operation = req.body;
-        Movimiento.createSalida(operation, (err, data) => {
+        Movimiento.createExit(operation, (err, data) => {
             if(err) {
                 return res.status(501).json({
                     success: false,

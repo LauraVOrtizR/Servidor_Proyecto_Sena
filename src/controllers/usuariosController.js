@@ -1,7 +1,24 @@
 const Usuario = require('../models/usuario');
 module.exports = {
-    getAllDocumentos(req, res) {
-        Usuario.getAllDocumentos((err, data) => {
+    getAllDocuments(req, res) {
+        Usuario.getAllDocuments((err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los documentos',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos de los documentos
+            });
+        });
+    },
+
+    getAllRoles(req, res) {
+        Usuario.getAllRoles((err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,
@@ -53,8 +70,9 @@ module.exports = {
         });
     },
 
-    getAllPerfil(req, res) {
-        Usuario.getAllPerfil((err, data) => {
+    getAllProfile(req, res) {
+        const user = req.query;
+        Usuario.getAllProfile(user,(err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,

@@ -1,7 +1,7 @@
 const db = require('../config/config');
 const Usuario = {};
 
-Usuario.getAllDocumentos = (result) => {
+Usuario.getAllDocuments = (result) => {
     const sql = 'SELECT * FROM tipos_documentos'
     ;
     db.query(
@@ -14,6 +14,25 @@ Usuario.getAllDocumentos = (result) => {
             }
             else{
                 console.log('Documentos encontrados: ', res);
+                result(null, res);
+            }
+        }
+    )
+};
+
+Usuario.getAllRoles = (result) => {
+    const sql = 'SELECT * FROM roles'
+    ;
+    db.query(
+        sql,
+        [],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Roles encontrados: ', res);
                 result(null, res);
             }
         }
@@ -37,7 +56,7 @@ Usuario.create = (user, result) => {
                     result(null, {message: 'El usuario ya existe'});
                 }
                 else {
-                    const sql = 'INSERT INTO usuarios(nombre_usuario, id_tipo_documento, numero_documento, correo_electronico, contraseña, id_rol)VALUES (?, ?, ?, ?, ?, ?)' 
+                    const sql = 'INSERT INTO usuarios(nombre_usuario, id_tipo_documento, numero_documento, correo_electronico, contraseña, id_rol, id_jefe)VALUES (?, ?, ?, ?, ?, ?, ?)' 
                     ;
                     db.query(
                         sql,
@@ -47,7 +66,8 @@ Usuario.create = (user, result) => {
                             user.numero_documento,
                             user.correo_electronico,
                             user.contraseña,
-                            user.id_rol
+                            user.id_rol,
+                            user.id_jefe
                         ],
                         (err, res) => {
                             if(err) {
@@ -88,14 +108,16 @@ Usuario.login = (user, result) => {
     )
 };
 
-Usuario.getAllPerfil = (result) => {
+Usuario.getAllProfile = (user, result) => {
     const sql = `SELECT nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
     JOIN roles ON usuarios.id_rol = roles.id_rol 
-    WHERE usuarios.id_rol != 1`
+    WHERE usuarios.id_jefe = ?`
     ;
     db.query(
         sql, 
-        [],
+        [
+            user.id_jefe
+        ],
         (err, res) =>{
             if(err) {
                 console.log('error: ', err);

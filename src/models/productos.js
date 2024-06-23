@@ -277,28 +277,30 @@ Producto.updateDetails = ( producto, result ) => {
 Producto.getTransactions = ( producto, result ) => {
     const sql = `
     SELECT CONCAT('ENT ', entradas.id_entrada) AS 'Referencia',
-        fecha,
-        almacenes.nombre_almacen AS 'Origen',
-        destino_entrada AS 'Destino'
+		DATE_FORMAT(fecha, '%Y-%m-%d') AS 'Fecha',
+        origen_entrada AS 'Origen_Destino',
+        CONCAT('+',cantidad_entrada) AS 'Cantidad'
     FROM entradas
     JOIN productos_entradas ON entradas.id_entrada = productos_entradas.id_entrada
-    JOIN almacenes ON entradas.id_almacen = almacenes.id_almacen
-    WHERE productos_entradas.id_producto = ?
-    UNION ALL
+    JOIN almacenes_productos ON entradas.id_almacen = almacenes_productos.id_almacen
+    WHERE productos_entradas.id_producto = ? AND entradas.id_almacen = ?
+    UNION
     SELECT CONCAT('SAL ', salidas.id_salida) AS 'Referencia',
-        fecha,
-        almacenes.nombre_almacen AS 'Origen',
-        destino_salida AS 'Destino'
+        DATE_FORMAT(fecha, '%Y-%m-%d') AS 'FECHA',
+        destino_salida AS 'Origen_Destino',
+        CONCAT('-',cantidad_salida) AS 'Cantidad'
     FROM salidas
     JOIN productos_salidas ON salidas.id_salida = productos_salidas.id_salida
-    JOIN almacenes ON salidas.id_almacen = almacenes.id_almacen
-    WHERE productos_salidas.id_producto = ?;
+    JOIN almacenes_productos ON salidas.id_almacen = almacenes_productos.id_almacen
+    WHERE productos_salidas.id_producto = ? AND salidas.id_almacen = ?;
     `; // Consulta para leer los movimientos de un producto
     db.query(
         sql,
         [
             producto.id_producto,
-            producto.id_producto
+            producto.id_almacen,
+            producto.id_producto,
+            producto.id_almacen
         ],
         ( err, res ) => {
             if( err ) {

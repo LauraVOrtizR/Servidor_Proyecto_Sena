@@ -157,14 +157,17 @@ module.exports = {
     getTransactionsProduct ( req, res ) {
         console.log( 'id_producto:' , req.query.id_producto);
         const id_producto = req.query.id_producto || null; // Id del producto
-        if( !id_producto ) {
+        const id_almacen = req.query.id_almacen || null; // Id del almacen
+        
+        if( !id_producto || !id_almacen) {
             return res.status( 400 ).json({
                 success: false,
-                message: 'El id del producto es requerido'
+                message: 'El id del producto y del almacen es requerido'
             });
         }
         const producto = {
-            id_producto: id_producto
+            id_producto: id_producto,
+            id_almacen: id_almacen
         };
 
         Producto.getTransactions ( producto, ( err, data ) => {
