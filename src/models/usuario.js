@@ -132,7 +132,7 @@ Usuario.login = (user, result) => {
 };
 
 Usuario.getAllProfile = (user, result) => {
-    const sql = `SELECT nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
+    const sql = `SELECT id_usuario, nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
     JOIN roles ON usuarios.id_rol = roles.id_rol 
     WHERE usuarios.id_jefe = ?`
     ;
