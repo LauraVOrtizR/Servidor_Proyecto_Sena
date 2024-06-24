@@ -281,7 +281,7 @@ CREATE TABLE Almacenes_Productos(
         (3, 6);
 
 -- Insertar 30 entradas  
-    INSERT INTO Entradas (fecha_hora, origen_entrada, id_almacen)
+    INSERT INTO Entradas (fecha, origen_entrada, id_almacen)
     VALUES
         ('2024-03-07', 'Origen 1', 1),
         ('2024-03-08', 'Origen 2', 2),
@@ -315,7 +315,7 @@ CREATE TABLE Almacenes_Productos(
         ('2024-04-05', 'Origen 3', 3);
 
 -- Insertar 30 salidas
-    INSERT INTO Salidas (fecha_hora, destino_salida, id_almacen)
+    INSERT INTO Salidas (fecha, destino_salida, id_almacen)
     VALUES
         ('2024-03-07', 'Destino 1', 1),
         ('2024-03-08', 'Destino 2', 2),
@@ -449,6 +449,9 @@ CREATE TABLE Almacenes_Productos(
         (1, 28, 25),
         (2, 29, 3),
         (3, 30, 7);
+
+ALTER USER  'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Root1234';
+FLUSH PRIVILEGES;
 
 
 -- ______________________________________________________________________________________________________________________
