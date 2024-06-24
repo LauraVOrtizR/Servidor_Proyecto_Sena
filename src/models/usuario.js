@@ -39,6 +39,29 @@ Usuario.getAllRoles = (result) => {
     )
 };
 
+Usuario.getAllPermisions = (user, result) => {
+    const sql = `
+    SELECT COUNT(*) AS Permisos FROM roles_permisos WHERE id_rol = ? AND id_permiso = ?
+    `;
+    db.query(
+        sql, 
+        [
+            user.id_rol,
+            user.id_permiso
+        ],
+        (err, res) => {
+            if(err) {
+                console.log('error: ', err);
+                result(err, null);
+            }
+            else{
+                console.log('Permisos encontrados: ', res);
+                result(null, res);
+            }
+        }
+    );
+};
+
 Usuario.create = (user, result) => {
     const sql = 'SELECT COUNT(*) AS datos_existentes FROM usuarios WHERE correo_electronico = ? OR numero_documento = ?'
     ;

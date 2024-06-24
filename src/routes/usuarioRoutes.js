@@ -4,6 +4,7 @@ const usuariosController = require('../controllers/usuariosController');
 
 router.get('/usuarios', usuariosController.getAllDocuments);
 router.get('/usuarios/roles', usuariosController.getAllRoles);
+router.get('/usuarios/permisos', usuariosController.getAllPermisions);
 router.post('/usuarios/registro', usuariosController.register);
 router.post('/usuarios/login', usuariosController.login);
 router.post('/usuarios/perfiles/registro', usuariosController.register);

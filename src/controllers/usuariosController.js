@@ -34,6 +34,24 @@ module.exports = {
         });
     },
 
+    getAllPermisions(req, res) {
+        const user = req.query;
+        Usuario.getAllPermisions(user,(err, data) => {
+            if(err) {
+                res.status(501).json({
+                    success: false,
+                    message: 'Error al obtener los permisos',
+                    error: err
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: res.message,
+                data: data //Datos de los permisos
+            });
+        });
+    },
+
     register(req, res) {
         const user = req.body; //Datos del cliente
         Usuario.create(user, (err, data) => {
