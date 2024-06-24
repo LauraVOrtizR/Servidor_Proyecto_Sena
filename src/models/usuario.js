@@ -196,8 +196,11 @@ Usuario.deletePerfil = (user, result) => {
     )
 };
 
-Usuario.getUsusario = (user, result) => {
-    const sql = `SELECT nombre_usuario, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios WHERE id_usuario = ?`
+Usuario.getUser = (user, result) => {
+    const sql = `SELECT nombre_usuario, nombre_rol, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios 
+    JOIN tipos_documentos ON usuarios.id_tipo_documento = tipos_documentos.id_tipo_documento
+    JOIN roles ON usuarios.id_rol = roles.id_rol
+    WHERE id_usuario = ?`
     ;
     db.query(
         sql,

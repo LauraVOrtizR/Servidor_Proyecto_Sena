@@ -142,7 +142,7 @@ module.exports = {
         });
     },
 
-    getUsuario (req, res){
+    getUser (req, res){
         const id_usuario = req.query.id_usuario || null;
         if(!id_usuario) {
             return res.status(400).json({
@@ -153,7 +153,7 @@ module.exports = {
         const user = {
             id_usuario: id_usuario
         };
-        Usuario.getUsusario(user, (err, data) => {
+        Usuario.getUser(user, (err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,

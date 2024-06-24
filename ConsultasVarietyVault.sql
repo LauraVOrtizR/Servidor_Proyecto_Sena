@@ -573,11 +573,16 @@ FLUSH PRIVILEGES;
         WHERE productos.id_producto = ? AND Almacenes.id_almacen = ?
 
         --Consulta actualizacion datos del producto al editarlo y guardar cambios
-        UPDATE Productos
-        SET nombre_producto = ?
-            stock_minimo = ?
-            precio_venta = ?
-            imagen = ?
+        SELECT COUNT(*) AS datos_existentes FROM productos
+        WHERE referencia_producto = ? AND id_producto = ?
+
+        UPDATE productos
+        SET 
+            referencia_producto = ?,
+            nombre_producto = ?,
+            stock_minimo = ?,
+            precio_venta = ?,
+            imagen = ?,
             id_categoria = ?
         WHERE id_producto = ?
 

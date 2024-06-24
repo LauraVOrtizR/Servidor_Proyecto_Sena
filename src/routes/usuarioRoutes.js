@@ -11,7 +11,7 @@ router.post('/usuarios/perfiles/registro', usuariosController.register);
 router.get('/usuarios/perfiles', usuariosController.getAllProfile);
 router.put('/usuarios/perfiles', usuariosController.updatePerfil);
 router.put('/usuarios/perfiles/eliminar', usuariosController.deletePerfil);
-router.get('/usuarios/ajustes', usuariosController.getUsuario);
+router.get('/usuarios/ajustes', usuariosController.getUser);
 router.put('/usuarios/ajustes', usuariosController.updateUsuario);
 
 module.exports = router;
