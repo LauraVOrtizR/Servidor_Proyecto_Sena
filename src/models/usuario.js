@@ -134,7 +134,7 @@ Usuario.login = (user, result) => {
 Usuario.getAllProfile = (user, result) => {
     const sql = `SELECT id_usuario, nombre_usuario, correo_electronico, nombre_rol FROM usuarios 
     JOIN roles ON usuarios.id_rol = roles.id_rol 
-    WHERE usuarios.id_jefe = ?`
+    WHERE usuarios.id_jefe = ? AND usuarios.estado_usuario = 1`
     ;
     db.query(
         sql, 
@@ -154,7 +154,7 @@ Usuario.getAllProfile = (user, result) => {
     )
 }
 
-Usuario.updatePerfil = (user, result) => {
+Usuario.updateProfile = (user, result) => {
     const sql = 'UPDATE usuarios SET nombre_usuario = ?, id_rol = ? WHERE id_usuario = ?'
     ;
     db.query(
@@ -177,8 +177,8 @@ Usuario.updatePerfil = (user, result) => {
     )
 };
 
-Usuario.deletePerfil = (user, result) => {
-    const sql = `UPDATE usuarios SET estado = 0 WHERE id_usuario = ?`
+Usuario.deleteProfile = (user, result) => {
+    const sql = `UPDATE usuarios SET estado_usuario = 0 WHERE id_usuario = ?`
     ;
     db.query(
         sql,
@@ -197,7 +197,7 @@ Usuario.deletePerfil = (user, result) => {
 };
 
 Usuario.getUser = (user, result) => {
-    const sql = `SELECT nombre_usuario, nombre_rol, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios 
+    const sql = `SELECT nombre_usuario, nombre_rol, roles.id_rol, tipo_documento, numero_documento, correo_electronico, contraseña FROM usuarios 
     JOIN tipos_documentos ON usuarios.id_tipo_documento = tipos_documentos.id_tipo_documento
     JOIN roles ON usuarios.id_rol = roles.id_rol
     WHERE id_usuario = ?`

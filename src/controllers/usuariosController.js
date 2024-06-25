@@ -106,9 +106,9 @@ module.exports = {
         });
     },
 
-    updatePerfil(req, res) {
+    updateProfile(req, res) {
         const user = req.body;
-        Usuario.updatePerfil(user, (err, data) => {
+        Usuario.updateProfile(user, (err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,
@@ -124,10 +124,10 @@ module.exports = {
         });
     },
 
-    deletePerfil(req, res) {
+    deleteProfile(req, res) {
         const user = req.body;
         console.log('usuario a eliminar', user);
-        Usuario.deletePerfil(user, (err, data) => {
+        Usuario.deleteProfile(user, (err, data) => {
             if(err) {
                 res.status(501).json({
                     success: false,

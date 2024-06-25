@@ -25,13 +25,13 @@ Almacen.create = (store, result) => {
 }
 
 Almacen.asignAlmacen = (store, result) => {
-    const sql = `INSERT INTO almacenes_usuarios (id_almacen, id_usuario)VALUES (?, ?)`
+    let lista_almacenes = store.almaces_asignar.map(item => [item, store.id_usuario, store.id_almacen]);
+    const sql = `INSERT INTO almacenes_usuarios (id_almacen, id_usuario)VALUES ?`
         ;
     db.query(
         sql,
         [
-            store.id_almacen,
-            store.id_usuario,
+            lista_almacenes
         ],
         (err, res) => {
             if (err) {
