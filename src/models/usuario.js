@@ -121,7 +121,7 @@ Usuario.login = (user, result) => {
         (err, res) => {
             if(err) {
                 console.log('error: ', err);
-                result(err, null);
+                result(err, null, {message: 'Usuaro o Contraseña Incorrectas'});
             }
             else{
                 console.log('Usuario encontrado: ', res);

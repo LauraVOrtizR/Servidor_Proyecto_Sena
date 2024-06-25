@@ -25,8 +25,8 @@ Almacen.create = (store, result) => {
 }
 
 Almacen.asignAlmacen = (store, result) => {
-    let lista_almacenes = store.almaces_asignar.map(item => [item, store.id_usuario, store.id_almacen]);
-    const sql = `INSERT INTO almacenes_usuarios (id_almacen, id_usuario)VALUES ?`
+    let lista_almacenes = store.almacenes_asignar.map(item => [item.id_almacen, item.id_usuario]);
+    const sql = `INSERT INTO almacenes_usuarios (id_almacen, id_usuario) VALUES ?`
         ;
     db.query(
         sql,
@@ -99,7 +99,6 @@ Almacen.deleteAlmacen = (store, result) => {
                 result(err, null);
             }
             else{
-                console.log('prueba', res[0]);
                 if(res[0].cantidad_existente == null || res[0].cantidad_existente == 0){
                     const sql = `
                     UPDATE almacenes SET estado_almacen = 0 WHERE id_almacen = ?
@@ -121,10 +120,8 @@ Almacen.deleteAlmacen = (store, result) => {
                         }
                     );
                 }
-                else{
-                    console.log(res[0].cantidad_existente)
-                    result(null, {message: 'No se puede eliminar el almacen, tiene productos asignados'});
-                }
+                console.log(res[0].cantidad_existente)
+                result(null, res, {message: 'No se puede eliminar el almacen, tiene productos asignados'});
             }
         }
     )

@@ -101,7 +101,7 @@ module.exports = {
             else {
                 return res.status(200).json({
                     success: true,
-                    message: 'Almacen actualizado',
+                    message: res.message,
                     data: data
                 });
             }
